@@ -1,14 +1,23 @@
 import Assistant from "../assistentPage/assistantPage";
+import MainPage from "./main";
 
 class PageLoader {
   public url: string;
   public currentPage: string;
-  private newTag: HTMLDivElement | undefined;
+  private newTag: HTMLElement | undefined;
 
   constructor() {
     this.url = "http://localhost:8080/";
     this.newTag = undefined;
     this.currentPage = this.getCurrentPage();
+    this.setUrlChangeListener();
+  }
+
+  private setUrlChangeListener() {
+    window.addEventListener("popstate", () => {
+      this.currentPage = this.getCurrentPage();
+      this.changePage(this.currentPage);
+    });
   }
 
   private getCurrentPage(): string {
@@ -26,6 +35,11 @@ class PageLoader {
 
   private changePage(page: string): void {
     switch (page) {
+      case this.url: {
+        const main = new MainPage();
+        this.newTag = main.getMainWrapper();
+        break;
+      }
       default: {
         const assistant = new Assistant();
         this.newTag = assistant.tag;
@@ -34,7 +48,12 @@ class PageLoader {
     }
 
     const main = document.querySelector(".main");
-    main?.append(this.newTag);
+    if (main) {
+      while (main.firstChild) {
+        main.removeChild(main.firstChild);
+      }
+      main.append(this.newTag);
+    }
   }
 }
 

@@ -2,9 +2,9 @@ import PageLoader from "./pageLoader";
 
 class MainPage {
   public tag: HTMLElement;
-  mainWrapper: HTMLDivElement;
-  baseButton: HTMLDivElement;
-  assistantButton: HTMLDivElement;
+  private mainWrapper: HTMLDivElement;
+  private baseButton: HTMLDivElement;
+  private assistantButton: HTMLDivElement;
 
   constructor() {
     this.tag = document.createElement("main");
@@ -26,6 +26,10 @@ class MainPage {
     this.setButtonHandler(this.assistantButton);
   }
 
+  public getMainWrapper(): HTMLElement {
+    return this.mainWrapper;
+  }
+
   private setClasses(): void {
     this.tag.classList.add("main");
     this.mainWrapper.classList.add("main__wrapper");
@@ -37,7 +41,6 @@ class MainPage {
   private setButtonHandler(button: HTMLDivElement): void {
     const url = new PageLoader();
     button.addEventListener("click", (e) => {
-      this.tag.removeChild(this.mainWrapper);
       url.setUrl(button.id);
     });
   }
