@@ -1,3 +1,13 @@
 from django.db import models
+class Bank(models.Model):
+    name = models.CharField(max_length=255)
+    def __str__(self):
+        return self.name
+    
+		
+class FinancialProduct(models.Model):
+    name = models.CharField(max_length=255)
 
-# Create your models here.
+    def __str__(self):
+        return self.name
+
