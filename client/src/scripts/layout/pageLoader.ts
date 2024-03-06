@@ -1,4 +1,4 @@
-import Assistant from "../assistentPage/assistantPage";
+import Assistant from "../assistentPage/assistant";
 import MainPage from "./main";
 
 class PageLoader {
