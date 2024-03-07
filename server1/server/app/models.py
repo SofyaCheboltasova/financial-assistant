@@ -1,13 +1,15 @@
 from django.db import models
 class Bank(models.Model):
-    name = models.CharField(max_length=255)
+    nameRus = models.CharField(max_length=255)
+    nameEng = models.CharField(max_length=255)
     def __str__(self):
-        return self.name
+        return self.nameEng
     
 		
 class FinancialProduct(models.Model):
-    name = models.CharField(max_length=255)
+    nameRus = models.CharField(max_length=255)
+    nameEng = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.nameEng
 

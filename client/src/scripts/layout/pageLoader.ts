@@ -35,7 +35,7 @@ class PageLoader {
   private changePage(page: string): void {
     switch (page) {
       case "knowledge-base": {
-        const base = new KnowledgeBase();
+        const base = new KnowledgeBase(this);
         this.newTag = base.tag;
         break;
       }

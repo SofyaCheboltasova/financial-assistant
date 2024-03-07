@@ -1,11 +1,14 @@
 interface Bank {
   id: number;
-  name: string;
+  nameRus: string;
+  nameEng: string;
 }
 
-interface Products {
+interface Product {
   id: number;
-  name: string;
+  nameRus: string;
+  nameEng: string;
 }
 
-export { Bank, Products };
+export { Bank, Product };
+

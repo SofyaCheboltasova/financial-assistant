@@ -1,5 +1,5 @@
 import axios from "../../../node_modules/axios/index";
-import { Bank, Products } from "../contracts/interfaces";
+import { Bank, Product } from "../contracts/interfaces";
 
 async function fetchBanks(): Promise<Bank[] | []> {
   try {
@@ -11,10 +11,10 @@ async function fetchBanks(): Promise<Bank[] | []> {
   }
 }
 
-async function fetchFinancialProducts(): Promise<Products[] | []> {
+async function fetchFinancialProducts(): Promise<Product[] | []> {
   try {
     const response = await axios.get("/financial-products/");
-    return response.data as Products[];
+    return response.data as Product[];
   } catch (error) {
     console.error("Error fetching financial products:", error);
     return [];
