@@ -18,7 +18,7 @@ class KnowledgeBase {
         const div = document.createElement("div");
         div.textContent = bank.name;
         div.id = String(bank.id);
-        div.classList.add("bank__name");
+        div.classList.add("button");
         this.tag.appendChild(div);
       });
 

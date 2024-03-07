@@ -36,8 +36,8 @@ class MainPage {
     this.tag.classList.add("main");
     this.mainWrapper.classList.add("main__wrapper");
 
-    this.baseButton.classList.add("main__button_base");
-    this.assistantButton.classList.add("main__button_assistant");
+    this.baseButton.classList.add("button");
+    this.assistantButton.classList.add("button");
   }
 
   private setButtonHandler(button: HTMLDivElement): void {
