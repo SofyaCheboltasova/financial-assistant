@@ -2,11 +2,13 @@ import PageLoader from "./pageLoader";
 
 class MainPage {
   public tag: HTMLElement;
+  private loader: PageLoader;
   private mainWrapper: HTMLDivElement;
   private baseButton: HTMLDivElement;
   private assistantButton: HTMLDivElement;
 
-  constructor() {
+  constructor(loader: PageLoader) {
+    this.loader = loader;
     this.tag = document.createElement("main");
     this.mainWrapper = document.createElement("div");
 
@@ -39,9 +41,8 @@ class MainPage {
   }
 
   private setButtonHandler(button: HTMLDivElement): void {
-    const url = new PageLoader();
     button.addEventListener("click", (e) => {
-      url.setUrl(button.id);
+      this.loader.setUrl(button.id);
     });
   }
 }

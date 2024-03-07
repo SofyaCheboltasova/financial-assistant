@@ -1,4 +1,5 @@
 import Assistant from "../assistentPage/assistant";
+import KnowledgeBase from "../knowledgeBase/knowledgeBase";
 import MainPage from "./main";
 
 class PageLoader {
@@ -29,20 +30,23 @@ class PageLoader {
   public setUrl(page: string): void {
     const newUrl = this.url + "#" + page;
     window.location.href = newUrl;
-
-    this.changePage(page);
   }
 
   private changePage(page: string): void {
     switch (page) {
-      case this.url: {
-        const main = new MainPage();
-        this.newTag = main.getMainWrapper();
+      case "knowledge-base": {
+        const base = new KnowledgeBase();
+        this.newTag = base.tag;
+        break;
+      }
+      case "assistant": {
+        const assistant = new Assistant();
+        this.newTag = assistant.tag;
         break;
       }
       default: {
-        const assistant = new Assistant();
-        this.newTag = assistant.tag;
+        const main = new MainPage(this);
+        this.newTag = main.getMainWrapper();
         break;
       }
     }
