@@ -3,43 +3,37 @@ import KnowledgeBase from "../knowledgeBase/knowledgeBase";
 import MainPage from "./main";
 
 class PageLoader {
-  public url: string;
+  public url: URL;
   public currentPage: string;
   private newTag: HTMLElement | undefined;
 
   constructor() {
-    this.url = "http://localhost:8080/";
+    this.url = new URL("http://localhost:8080/");
     this.newTag = undefined;
-    this.currentPage = this.getCurrentPage();
+    this.currentPage = this.url.hash;
     this.setUrlChangeListener();
   }
 
   private setUrlChangeListener() {
     window.addEventListener("popstate", () => {
-      this.currentPage = this.getCurrentPage();
+      this.currentPage = this.url.hash;
       this.changePage(this.currentPage);
     });
   }
-
-  private getCurrentPage(): string {
-    const url = window.location.href;
-    const parts = url.split("#");
-    return parts[parts.length - 1];
-  }
-
   public setUrl(page: string): void {
-    const newUrl = this.url + "#" + page;
-    window.location.href = newUrl;
+    this.url = new URL(`#${page}`, this.url);
+    this.currentPage = page;
+    window.location.href = this.url.toString();
   }
 
   private changePage(page: string): void {
     switch (page) {
-      case "knowledge-base": {
+      case "#knowledge-base": {
         const base = new KnowledgeBase(this);
         this.newTag = base.tag;
         break;
       }
-      case "assistant": {
+      case "#assistant": {
         const assistant = new Assistant();
         this.newTag = assistant.tag;
         break;

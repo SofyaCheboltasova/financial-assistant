@@ -32,6 +32,8 @@ class KnowledgeBase {
   private setButtonHandler(button: HTMLDivElement): void {
     button.addEventListener("click", () => {
       this.chosenBankID = Number(button.id);
+
+      this.getFinancialProducts();
     });
   }
 
