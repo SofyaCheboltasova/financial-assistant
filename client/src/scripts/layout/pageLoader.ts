@@ -6,20 +6,35 @@ class PageLoader {
   public url: URL;
   public currentPage: string;
   private newTag: HTMLElement | undefined;
+  private base: KnowledgeBase;
+  private assistant: Assistant;
+  private main: MainPage;
 
   constructor() {
     this.url = new URL("http://localhost:8080/");
     this.newTag = undefined;
     this.currentPage = this.url.hash;
+
+    this.base = new KnowledgeBase(this);
+    this.assistant = new Assistant();
+    this.main = new MainPage(this);
+
     this.setUrlChangeListener();
   }
 
   private setUrlChangeListener() {
     window.addEventListener("popstate", () => {
-      this.currentPage = this.url.hash;
+      this.currentPage = this.getCurrentPage();
       this.changePage(this.currentPage);
     });
   }
+
+  private getCurrentPage(): string {
+    const url = window.location.href;
+    const parts = url.split("#");
+    return parts[parts.length - 1];
+  }
+
   public setUrl(page: string): void {
     this.url = new URL(`#${page}`, this.url);
     this.currentPage = page;
@@ -28,19 +43,20 @@ class PageLoader {
 
   private changePage(page: string): void {
     switch (page) {
-      case "#knowledge-base": {
-        const base = new KnowledgeBase(this);
-        this.newTag = base.tag;
+      case "products": {
+        this.newTag = this.base.tag;
         break;
       }
-      case "#assistant": {
-        const assistant = new Assistant();
-        this.newTag = assistant.tag;
+      case "banks": {
+        this.newTag = this.base.tag;
+        break;
+      }
+      case "assistant": {
+        this.newTag = this.assistant.tag;
         break;
       }
       default: {
-        const main = new MainPage(this);
-        this.newTag = main.getMainWrapper();
+        this.newTag = this.main.getMainWrapper();
         break;
       }
     }

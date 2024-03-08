@@ -14,7 +14,7 @@ class MainPage {
 
     this.baseButton = document.createElement("div");
     this.baseButton.textContent = "Knowledge base";
-    this.baseButton.id = "knowledge-base";
+    this.baseButton.id = "banks";
 
     this.assistantButton = document.createElement("div");
     this.assistantButton.textContent = "Assistant";
@@ -48,4 +48,3 @@ class MainPage {
 }
 
 export default MainPage;
-

@@ -4,7 +4,6 @@ from .models import Bank, FinancialProduct
 def get_banks(request):
     banks = Bank.objects.all()
     data = [{'id': bank.id, 'nameRus': bank.nameRus, 'nameEng': bank.nameEng, } for bank in banks]
-    print(banks)
     return JsonResponse(data, safe=False)
 
 def get_financial_products(request):

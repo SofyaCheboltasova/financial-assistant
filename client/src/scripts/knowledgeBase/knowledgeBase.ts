@@ -16,33 +16,40 @@ class KnowledgeBase {
 
   private setButtonsHtml(item: Bank | Product): HTMLDivElement {
     const button: HTMLDivElement = document.createElement("div");
-    const link: HTMLAnchorElement = document.createElement("a");
-    link.href = `#${item.nameEng}`;
 
     button.textContent = item.nameRus;
     button.id = String(item.id);
+    button.setAttribute("path", item.nameEng);
     button.classList.add("button");
 
-    link.appendChild(button);
-    this.tag.appendChild(link);
+    this.tag.appendChild(button);
 
     return button;
   }
 
-  private setButtonHandler(button: HTMLDivElement): void {
+  private setButtonHandler(
+    button: HTMLDivElement,
+    callback: () => void,
+    url: string
+  ): void {
     button.addEventListener("click", () => {
       this.chosenBankID = Number(button.id);
-
-      this.getFinancialProducts();
+      this.loader.setUrl(url);
+      callback();
     });
   }
 
   private async getBanks(): Promise<void> {
     try {
       this.banks = await fetchBanks();
+
+      while (this.tag.firstChild) {
+        this.tag.removeChild(this.tag.firstChild);
+      }
+
       this.banks.forEach((item) => {
         const buttonTag: HTMLDivElement = this.setButtonsHtml(item);
-        this.setButtonHandler(buttonTag);
+        this.setButtonHandler(buttonTag, this.getFinancialProducts, "products");
       });
 
       this.setClasses();
@@ -51,11 +58,20 @@ class KnowledgeBase {
     }
   }
 
+  private setProductsCategories(): void {}
+
   private async getFinancialProducts(): Promise<void> {
     try {
       this.finProducts = await fetchFinancialProducts();
+
+      while (this.tag.firstChild) {
+        this.tag.removeChild(this.tag.firstChild);
+      }
+
       this.finProducts.forEach((item) => {
-        this.setButtonsHtml(item);
+        const buttonTag = this.setButtonsHtml(item);
+        const url = buttonTag.getAttribute("path") ?? "#";
+        this.setButtonHandler(buttonTag, this.setProductsCategories, url);
       });
 
       this.setClasses();
@@ -70,4 +86,3 @@ class KnowledgeBase {
 }
 
 export default KnowledgeBase;
-
