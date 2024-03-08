@@ -13,3 +13,12 @@ class FinancialProduct(models.Model):
     def __str__(self):
         return self.nameEng
 
+class ProductCategories(models.Model):
+    bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
+    product = models.ForeignKey(FinancialProduct, on_delete=models.CASCADE)
+    categoryNameRus = models.CharField(max_length=255)
+    categoryNameEng = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.categoryNameEng
+

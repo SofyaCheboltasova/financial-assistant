@@ -15,14 +15,16 @@ class Migration(migrations.Migration):
             name='Bank',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                ('nameRus', models.CharField(max_length=255)),
+                ('nameEng', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='FinancialProduct',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
+                ('nameRus', models.CharField(max_length=255)),
+                ('nameEng', models.CharField(max_length=255)),
             ],
         ),
     ]
