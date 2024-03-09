@@ -1,4 +1,4 @@
-import { Bank, Categories, Product } from "../../contracts/interfaces";
+import DataType from "../../contracts/types";
 
 class KnowledgeBase {
   public tag: HTMLDivElement;
@@ -24,9 +24,22 @@ class KnowledgeBase {
     });
   }
 
-  public drawButtons(items: (Bank | Product | Categories)[]) {
+  private drawEmptyPage(): void {
+    const h1: HTMLHeadingElement = document.createElement("h1");
+    h1.classList.add("header");
+    h1.textContent = "Извините, по выбранной категории нет данных";
+
+    this.tag.appendChild(h1);
+  }
+
+  public drawButtons(items: DataType[] | []): void {
     while (this.tag.firstChild) {
       this.tag.removeChild(this.tag.firstChild);
+    }
+
+    if (items.length === 0) {
+      this.drawEmptyPage();
+      return;
     }
 
     items.forEach((item) => {

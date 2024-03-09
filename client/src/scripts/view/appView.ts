@@ -1,11 +1,12 @@
-import { Bank, Categories, Product } from "../contracts/interfaces";
 import KnowledgeBase from "./knowledgeBase/knowledgeBase";
 import Home from "./home/home";
 import Assistant from "./assistant/assistant";
+import DataType from "../contracts/types";
 
 /**
  * Call methods for drawing HTML and append new tag to main tag
  */
+
 class AppView {
   private home: Home;
   private assistant: Assistant;
@@ -35,7 +36,7 @@ class AppView {
     this.appendToMainTag(this.assistant.tag);
   }
 
-  public drawKnowledgeBasePage(data: (Bank | Product | Categories)[]): void {
+  public drawKnowledgeBasePage(data: DataType[] | []): void {
     this.knowledgeBase.drawButtons(data);
 
     this.clearMainTag();
