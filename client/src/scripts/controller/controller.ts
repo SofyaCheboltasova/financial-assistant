@@ -1,4 +1,4 @@
-import { Bank, Product } from "../contracts/interfaces";
+import { Bank, Categories, Product } from "../contracts/interfaces";
 import Api from "./api";
 
 /**
@@ -22,7 +22,16 @@ class AppController {
     return products;
   }
 
-  public async getProductsCategories() {}
+  public async getProductsCategories(
+    bankId: number,
+    productId: number
+  ): Promise<Categories[] | []> {
+    const categories = await this.api.fetchProductsCategories(
+      bankId,
+      productId
+    );
+    return categories;
+  }
 
   public getCategoryData() {}
 

@@ -2,6 +2,12 @@ import { Bank, Product } from "../contracts/interfaces";
 import AppController from "../controller/controller";
 import AppView from "../view/appView";
 
+enum Banks {
+  "Tinkoff",
+  "Sber",
+  "VTB",
+}
+
 class App {
   private controller: AppController;
   private view: AppView;
@@ -37,19 +43,26 @@ class App {
 
   private async changePage(page: string): Promise<void> {
     switch (page) {
-      case "products": {
-        const products: Product[] | [] = await this.controller.getProducts();
-        this.view.drawKnowledgeBasePage(products);
+      case "assistant": {
+        this.view.setAssistantPage();
         break;
       }
       case "banks": {
         const banks: Bank[] | [] = await this.controller.getBanks();
         this.view.drawKnowledgeBasePage(banks);
+        this.view.setButtonHandler("Bank");
         break;
       }
-      case "assistant": {
-        this.view.setAssistantPage();
+      case "products": {
+        const products: Product[] | [] = await this.controller.getProducts();
+        this.view.drawKnowledgeBasePage(products);
+        this.view.setButtonHandler("Product");
         break;
+      }
+      case "Tinkoff":
+      case "Sber":
+      case "VTB": {
+        // const categories = await this.controller.getProductsCategories();
       }
       default: {
         this.view.setHomePage();

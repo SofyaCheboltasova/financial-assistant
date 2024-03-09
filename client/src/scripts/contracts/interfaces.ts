@@ -10,5 +10,12 @@ interface Product {
   nameEng: string;
 }
 
-export { Bank, Product };
+interface Categories {
+  bankID: number;
+  productID: number;
+  nameRus: string;
+  nameEng: string;
+}
+
+export { Bank, Product, Categories };
 

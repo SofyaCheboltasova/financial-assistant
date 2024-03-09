@@ -42,6 +42,10 @@ class AppView {
     this.appendToMainTag(this.knowledgeBase.tag);
   }
 
+  public setButtonHandler(type: "Bank" | "Product"): void {
+    this.knowledgeBase.setButtonHandler(this.knowledgeBase.tag, type);
+  }
+
   private appendToMainTag(tag: HTMLElement) {
     this.mainTag.appendChild(tag);
   }
