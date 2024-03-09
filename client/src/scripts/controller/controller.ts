@@ -22,13 +22,15 @@ class AppController {
     return products;
   }
 
-  public async getProductsCategories(
-    bankId: number,
-    productId: number
-  ): Promise<Categories[] | []> {
+  public async getProductsCategories(): Promise<Categories[] | []> {
+    const bankId = localStorage.getItem("bank");
+    const productId = localStorage.getItem("product");
+
+    if (!bankId || !productId) return [];
+
     const categories = await this.api.fetchProductsCategories(
-      bankId,
-      productId
+      Number(bankId),
+      Number(productId)
     );
     return categories;
   }

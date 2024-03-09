@@ -53,16 +53,18 @@ class App {
         this.view.setButtonHandler("Bank");
         break;
       }
-      case "products": {
+      case "Tinkoff":
+      case "Sber":
+      case "VTB": {
         const products: Product[] | [] = await this.controller.getProducts();
         this.view.drawKnowledgeBasePage(products);
         this.view.setButtonHandler("Product");
         break;
       }
-      case "Tinkoff":
-      case "Sber":
-      case "VTB": {
-        // const categories = await this.controller.getProductsCategories();
+      case "Credits":
+      case "Mortgage": {
+        const categories = await this.controller.getProductsCategories();
+        console.error(categories);
       }
       default: {
         this.view.setHomePage();
