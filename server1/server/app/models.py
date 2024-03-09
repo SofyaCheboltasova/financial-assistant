@@ -14,8 +14,8 @@ class FinancialProduct(models.Model):
         return self.nameEng
 
 class ProductCategories(models.Model):
-    bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
-    product = models.ForeignKey(FinancialProduct, on_delete=models.CASCADE)
+    bank_id = models.ForeignKey(Bank, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(FinancialProduct, on_delete=models.CASCADE)
     categoryNameRus = models.CharField(max_length=255)
     categoryNameEng = models.CharField(max_length=255)
 
