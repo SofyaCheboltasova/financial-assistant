@@ -3,6 +3,9 @@ import KnowledgeBase from "./knowledgeBase/knowledgeBase";
 import Home from "./home/home";
 import Assistant from "./assistant/assistant";
 
+/**
+ * Call methods for drawing HTML and append new tag to main tag
+ */
 class AppView {
   private home: Home;
   private assistant: Assistant;
@@ -18,6 +21,11 @@ class AppView {
 
   public setHomePage(): void {
     this.home.drawHomePage();
+
+    this.clearMainTag();
+    if (this.home.tag) {
+      this.appendToMainTag(this.home.tag);
+    }
   }
 
   public setAssistantPage(): void {
@@ -27,7 +35,7 @@ class AppView {
     this.appendToMainTag(this.assistant.tag);
   }
 
-  public drawKnowledgeBasePage(data: (Bank | Product)[]) {
+  public drawKnowledgeBasePage(data: (Bank | Product)[]): void {
     this.knowledgeBase.drawButtons(data);
 
     this.clearMainTag();

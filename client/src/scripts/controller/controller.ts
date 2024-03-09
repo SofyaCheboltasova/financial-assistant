@@ -1,6 +1,10 @@
 import { Bank, Product } from "../contracts/interfaces";
 import Api from "./api";
 
+/**
+ * Gets data from the API and returns it to App class
+ */
+
 class AppController {
   private api: Api;
 

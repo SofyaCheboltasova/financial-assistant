@@ -1,19 +1,18 @@
 class Home {
   public main: HTMLElement;
-  private mainWrapper: HTMLDivElement;
+  public tag: HTMLDivElement | undefined;
 
   constructor() {
     this.main = document.createElement("main");
-    this.mainWrapper = document.createElement("div");
-
     this.main.classList.add("main");
-    this.mainWrapper.classList.add("main__wrapper");
 
-    this.main.appendChild(this.mainWrapper);
     document.body.appendChild(this.main);
   }
 
   public drawHomePage(): void {
+    this.tag = document.createElement("div");
+    this.tag.classList.add("main__wrapper");
+
     const baseLink = document.createElement("a");
     baseLink.href = "#banks";
 
@@ -31,7 +30,7 @@ class Home {
     baseLink.appendChild(baseButton);
     assistantLink.appendChild(assistantButton);
 
-    this.mainWrapper.append(baseLink, assistantLink);
+    this.tag.append(baseLink, assistantLink);
   }
 }
 
