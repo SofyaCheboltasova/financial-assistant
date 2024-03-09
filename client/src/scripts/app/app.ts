@@ -2,12 +2,6 @@ import { Bank, Categories, Product } from "../contracts/interfaces";
 import AppController from "../controller/controller";
 import AppView from "../view/appView";
 
-enum Banks {
-  "Tinkoff",
-  "Sber",
-  "VTB",
-}
-
 class App {
   private controller: AppController;
   private view: AppView;
@@ -37,12 +31,12 @@ class App {
   private setUrlChangeListener() {
     window.addEventListener("popstate", () => {
       this.currentPage = this.getCurrentPage();
-      this.changePage(this.currentPage);
+      this.changePage();
     });
   }
 
-  private async changePage(page: string): Promise<void> {
-    switch (page) {
+  private async changePage(): Promise<void> {
+    switch (this.currentPage) {
       case "assistant": {
         this.view.setAssistantPage();
         break;
@@ -53,16 +47,13 @@ class App {
         this.view.setButtonHandler("Bank");
         break;
       }
-      case "Tinkoff":
-      case "Sber":
-      case "VTB": {
+      case "products": {
         const products: Product[] | [] = await this.controller.getProducts();
         this.view.drawKnowledgeBasePage(products);
         this.view.setButtonHandler("Product");
         break;
       }
-      case "Credits":
-      case "Mortgage": {
+      case "categories": {
         const categories: Categories[] | [] =
           await this.controller.getProductsCategories();
         this.view.drawKnowledgeBasePage(categories);

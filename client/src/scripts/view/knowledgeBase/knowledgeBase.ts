@@ -13,8 +13,10 @@ class KnowledgeBase {
       if (node instanceof HTMLElement) {
         node.addEventListener("click", () => {
           if (type === "Bank") {
+            node.setAttribute("href", "#products");
             localStorage.setItem("bank", node.id);
           } else if (type === "Product") {
+            node.setAttribute("href", "#categories");
             localStorage.setItem("product", node.id);
           }
         });
@@ -29,7 +31,6 @@ class KnowledgeBase {
 
     items.forEach((item) => {
       const a: HTMLAnchorElement = document.createElement("a");
-      a.href = `#${item.nameEng}`;
       a.id = String(item.id);
 
       const button: HTMLDivElement = document.createElement("div");
