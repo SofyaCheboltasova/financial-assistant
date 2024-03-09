@@ -1,4 +1,4 @@
-import { Bank, Product } from "../contracts/interfaces";
+import { Bank, Categories, Product } from "../contracts/interfaces";
 import KnowledgeBase from "./knowledgeBase/knowledgeBase";
 import Home from "./home/home";
 import Assistant from "./assistant/assistant";
@@ -35,7 +35,7 @@ class AppView {
     this.appendToMainTag(this.assistant.tag);
   }
 
-  public drawKnowledgeBasePage(data: (Bank | Product)[]): void {
+  public drawKnowledgeBasePage(data: (Bank | Product | Categories)[]): void {
     this.knowledgeBase.drawButtons(data);
 
     this.clearMainTag();

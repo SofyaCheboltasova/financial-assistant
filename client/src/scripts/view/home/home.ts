@@ -20,11 +20,11 @@ class Home {
     assistantLink.href = "#assistant";
 
     const baseButton = document.createElement("div");
-    baseButton.textContent = "Knowledge base";
+    baseButton.textContent = "База знаний";
     baseButton.classList.add("button");
 
     const assistantButton = document.createElement("div");
-    assistantButton.textContent = "Assistant";
+    assistantButton.textContent = "Ассистент";
     assistantButton.classList.add("button");
 
     baseLink.appendChild(baseButton);

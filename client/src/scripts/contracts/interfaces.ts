@@ -11,6 +11,7 @@ interface Product {
 }
 
 interface Categories {
+  id: number;
   bankID: number;
   productID: number;
   nameRus: string;

@@ -1,4 +1,4 @@
-import { Bank, Product } from "../contracts/interfaces";
+import { Bank, Categories, Product } from "../contracts/interfaces";
 import AppController from "../controller/controller";
 import AppView from "../view/appView";
 
@@ -63,8 +63,10 @@ class App {
       }
       case "Credits":
       case "Mortgage": {
-        const categories = await this.controller.getProductsCategories();
-        console.error(categories);
+        const categories: Categories[] | [] =
+          await this.controller.getProductsCategories();
+        this.view.drawKnowledgeBasePage(categories);
+        break;
       }
       default: {
         this.view.setHomePage();

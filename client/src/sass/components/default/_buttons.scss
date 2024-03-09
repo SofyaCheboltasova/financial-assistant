@@ -1,5 +1,9 @@
 .button {
-  @include flex($justify-content: center, $align-items: center);
+  @include flex(
+    $justify-content: center,
+    $align-items: center,
+    $text-align: center
+  );
 
   cursor: pointer;
   background-color: $color-button-background;
@@ -15,3 +19,4 @@
     box-shadow: 0px 0px 20px 0px #ffffff5a;
   }
 }
+

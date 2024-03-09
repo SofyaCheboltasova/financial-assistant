@@ -1,4 +1,4 @@
-import { Bank, Product } from "../../contracts/interfaces";
+import { Bank, Categories, Product } from "../../contracts/interfaces";
 
 class KnowledgeBase {
   public tag: HTMLDivElement;
@@ -22,7 +22,7 @@ class KnowledgeBase {
     });
   }
 
-  public drawButtons(items: (Bank | Product)[]) {
+  public drawButtons(items: (Bank | Product | Categories)[]) {
     while (this.tag.firstChild) {
       this.tag.removeChild(this.tag.firstChild);
     }
