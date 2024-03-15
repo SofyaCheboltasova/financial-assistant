@@ -8,16 +8,34 @@ class KnowledgeBase {
     this.tag.classList.add("base__wrapper");
   }
 
-  public setButtonHandler(tag: HTMLElement, type: "Bank" | "Product"): void {
+  public setButtonHandler(
+    tag: HTMLElement,
+    type: "Bank" | "Product" | "Category" | "Subsections"
+  ): void {
     tag.childNodes.forEach((node) => {
       if (node instanceof HTMLElement) {
         node.addEventListener("click", () => {
-          if (type === "Bank") {
-            node.setAttribute("href", "#products");
-            localStorage.setItem("bank", node.id);
-          } else if (type === "Product") {
-            node.setAttribute("href", "#categories");
-            localStorage.setItem("product", node.id);
+          switch (type) {
+            case "Bank": {
+              node.setAttribute("href", "#products");
+              localStorage.setItem("bank", node.id);
+              break;
+            }
+            case "Product": {
+              node.setAttribute("href", "#categories");
+              localStorage.setItem("product", node.id);
+              break;
+            }
+            case "Category": {
+              node.setAttribute("href", "#category-subsections");
+              localStorage.setItem("category", node.id);
+              break;
+            }
+            case "Subsections": {
+              node.setAttribute("href", "#subsection-details");
+              localStorage.setItem("subsection", node.id);
+              break;
+            }
           }
         });
       }

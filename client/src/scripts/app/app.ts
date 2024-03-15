@@ -1,4 +1,4 @@
-import { Bank, Categories, Product } from "../contracts/interfaces";
+import { ResponseType, Categories } from "../contracts/interfaces";
 import AppController from "../controller/controller";
 import AppView from "../view/appView";
 
@@ -42,21 +42,30 @@ class App {
         break;
       }
       case "banks": {
-        const banks: Bank[] | [] = await this.controller.getBanks();
+        const banks: ResponseType[] | [] = await this.controller.getBanks();
         this.view.drawKnowledgeBasePage(banks);
         this.view.setButtonHandler("Bank");
         break;
       }
       case "products": {
-        const products: Product[] | [] = await this.controller.getProducts();
+        const products: ResponseType[] | [] =
+          await this.controller.getProducts();
         this.view.drawKnowledgeBasePage(products);
         this.view.setButtonHandler("Product");
         break;
       }
       case "categories": {
         const categories: Categories[] | [] =
-          await this.controller.getProductsCategories();
+          await this.controller.getProductCategories();
         this.view.drawKnowledgeBasePage(categories);
+        this.view.setButtonHandler("Category");
+        break;
+      }
+      case "category-subsections": {
+        const subsections: ResponseType[] | [] =
+          await this.controller.getCategorySubsections();
+        this.view.drawKnowledgeBasePage(subsections);
+        this.view.setButtonHandler("Subsections");
         break;
       }
       default: {

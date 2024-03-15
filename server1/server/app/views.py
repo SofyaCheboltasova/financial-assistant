@@ -26,7 +26,7 @@ def get_loan_subsection(request):
     if 'category_id' in request.GET:
         category_id = request.GET['category_id']
         subsections = BankLoanSubsection.objects.filter(category_id=category_id)
-        data = [{'id': subsection.id, 'titleRus': subsection.titleRus, 'nameEng': subsection.titleEng} for subsection in subsections]
+        data = [{'id': subsection.id, 'nameRus': subsection.titleRus, 'nameEng': subsection.titleEng} for subsection in subsections]
         return JsonResponse(data, safe=False)
     else:
         return JsonResponse({'error': 'Bank id and Product id are required.'}, status=400)
@@ -35,7 +35,7 @@ def get_subsection_detail(request):
     if 'subsection_id' in request.GET:
         subsection_id = request.GET['subsection_id']
         details = BankLoanDetail.objects.filter(subsection_id=subsection_id)
-        data = [{'id': detail.id, 'titleRus': detail.title} for detail in details]
+        data = [{'id': detail.id, 'nameRus': detail.title} for detail in details]
         return JsonResponse(data, safe=False)
     else:
         return JsonResponse({'error': 'Bank id and Product id are required.'}, status=400)

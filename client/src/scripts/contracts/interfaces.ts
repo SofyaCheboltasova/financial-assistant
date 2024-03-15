@@ -1,22 +1,13 @@
-interface Bank {
+interface ResponseType {
   id: number;
   nameRus: string;
   nameEng: string;
 }
 
-interface Product {
-  id: number;
-  nameRus: string;
-  nameEng: string;
-}
-
-interface Categories {
-  id: number;
+interface Categories extends ResponseType {
   bankID: number;
   productID: number;
-  nameRus: string;
-  nameEng: string;
 }
 
-export { Bank, Product, Categories };
+export { ResponseType, Categories };
 

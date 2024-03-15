@@ -1,5 +1,6 @@
-import { Bank, Product, Categories } from "./interfaces";
+import { ResponseType, Categories } from "./interfaces";
 
-type DataType = Bank | Product | Categories;
+type DataType = ResponseType | Categories;
 
 export default DataType;
+
