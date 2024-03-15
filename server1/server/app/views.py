@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from .models import Bank, FinancialProduct, ProductCategories
+from .models import Bank, BankLoanDetail, BankLoanSubsection, FinancialProduct, ProductCategories
 
 def get_banks(request):
     banks = Bank.objects.all()
@@ -18,6 +18,24 @@ def get_product_categories(request):
         product_id = request.GET['product_id']
         categories = ProductCategories.objects.filter(bank_id=bank_id, product_id=product_id)
         data = [{'id': category.id, 'nameRus': category.categoryNameRus, 'nameEng': category.categoryNameEng} for category in categories]
+        return JsonResponse(data, safe=False)
+    else:
+        return JsonResponse({'error': 'Bank id and Product id are required.'}, status=400)
+    
+def get_loan_subsection(request):
+    if 'category_id' in request.GET:
+        category_id = request.GET['category_id']
+        subsections = BankLoanSubsection.objects.filter(category_id=category_id)
+        data = [{'id': subsection.id, 'titleRus': subsection.titleRus, 'nameEng': subsection.titleEng} for subsection in subsections]
+        return JsonResponse(data, safe=False)
+    else:
+        return JsonResponse({'error': 'Bank id and Product id are required.'}, status=400)
+    
+def get_subsection_detail(request):
+    if 'subsection_id' in request.GET:
+        subsection_id = request.GET['subsection_id']
+        details = BankLoanDetail.objects.filter(subsection_id=subsection_id)
+        data = [{'id': detail.id, 'titleRus': detail.title} for detail in details]
         return JsonResponse(data, safe=False)
     else:
         return JsonResponse({'error': 'Bank id and Product id are required.'}, status=400)
