@@ -1,10 +1,26 @@
 .base__wrapper {
   max-width: 1440px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 5rem 0;
+}
+
+.base__buttons {
   @include flex(
     $gap: 20rem,
     $justify-content: space-evenly,
     $align-items: center
   );
-  height: 100%;
+  flex-wrap: wrap;
 }
 
+.base__content {
+  display: none;
+}
+
+.base__buttons_list {
+  @include flex($direction: column, $gap: 5rem);
+  height: unset;
+  width: fit-content;
+  padding-bottom: 5rem;
+}

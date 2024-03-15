@@ -2,10 +2,20 @@ import DataType from "../../contracts/types";
 
 class KnowledgeBase {
   public tag: HTMLDivElement;
+  public buttonsTag: HTMLDivElement;
+  public contentTag: HTMLDivElement;
 
   constructor() {
     this.tag = document.createElement("div");
     this.tag.classList.add("base__wrapper");
+
+    this.buttonsTag = document.createElement("div");
+    this.buttonsTag.classList.add("base__buttons");
+
+    this.contentTag = document.createElement("div");
+    this.contentTag.classList.add("base__content");
+
+    this.tag.append(this.buttonsTag, this.contentTag);
   }
 
   public setButtonHandler(
@@ -54,10 +64,9 @@ class KnowledgeBase {
 
     this.tag.appendChild(h1);
   }
-
-  public drawButtons(items: DataType[] | []): void {
-    while (this.tag.firstChild) {
-      this.tag.removeChild(this.tag.firstChild);
+  public drawButtons(items: DataType[] | [], isList?: boolean): void {
+    while (this.buttonsTag.firstChild) {
+      this.buttonsTag.removeChild(this.buttonsTag.firstChild);
     }
 
     if (items.length === 0) {
@@ -70,11 +79,17 @@ class KnowledgeBase {
       a.id = String(item.id);
 
       const button: HTMLDivElement = document.createElement("div");
-      button.classList.add("button");
+      this.buttonsTag.className = "base__buttons";
+      button.className = "button";
       button.textContent = item.nameRus;
 
       a.appendChild(button);
-      this.tag.appendChild(a);
+      this.buttonsTag.appendChild(a);
+
+      if (isList) {
+        this.buttonsTag.className = "base__buttons_list";
+        button.className = "button__thin";
+      }
     });
   }
 }

@@ -71,7 +71,7 @@ class App {
       case "subsection-details": {
         const subsectionDetails: ResponseType[] | [] =
           await this.controller.getSubsectionDetails();
-        this.view.drawKnowledgeBasePage(subsectionDetails);
+        this.view.drawKnowledgeBaseList(subsectionDetails);
         this.view.setButtonHandler("SubsectionDetails");
         break;
       }

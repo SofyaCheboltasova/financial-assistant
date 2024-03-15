@@ -43,10 +43,17 @@ class AppView {
     this.appendToMainTag(this.knowledgeBase.tag);
   }
 
+  public drawKnowledgeBaseList(data: DataType[] | []): void {
+    this.knowledgeBase.drawButtons(data, true);
+
+    this.clearMainTag();
+    this.appendToMainTag(this.knowledgeBase.tag);
+  }
+
   public setButtonHandler(
     type: "Bank" | "Product" | "Category" | "Subsections" | "SubsectionDetails"
   ): void {
-    this.knowledgeBase.setButtonHandler(this.knowledgeBase.tag, type);
+    this.knowledgeBase.setButtonHandler(this.knowledgeBase.buttonsTag, type);
   }
 
   private appendToMainTag(tag: HTMLElement) {
