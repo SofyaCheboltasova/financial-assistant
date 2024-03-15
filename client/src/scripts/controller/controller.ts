@@ -45,7 +45,15 @@ class AppController {
     return subsections;
   }
 
-  public getFullInfo() {}
+  public async getSubsectionDetails() {
+    const subsectionId = localStorage.getItem("subsection");
+    if (!subsectionId) return [];
+
+    const subsectionDetails = await this.api.fetchSubsectionDetails(
+      Number(subsectionId)
+    );
+    return subsectionDetails;
+  }
 }
 
 export default AppController;

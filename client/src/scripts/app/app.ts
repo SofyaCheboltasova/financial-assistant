@@ -68,6 +68,13 @@ class App {
         this.view.setButtonHandler("Subsections");
         break;
       }
+      case "subsection-details": {
+        const subsectionDetails: ResponseType[] | [] =
+          await this.controller.getSubsectionDetails();
+        this.view.drawKnowledgeBasePage(subsectionDetails);
+        this.view.setButtonHandler("SubsectionDetails");
+        break;
+      }
       default: {
         this.view.setHomePage();
         break;

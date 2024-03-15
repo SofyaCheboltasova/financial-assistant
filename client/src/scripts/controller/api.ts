@@ -60,7 +60,23 @@ class Api {
       });
       return response.data;
     } catch (error) {
-      console.error("Error fetching credit categories:", error);
+      console.error("Error fetching category's subsections:", error);
+      return [];
+    }
+  }
+
+  public async fetchSubsectionDetails(
+    subsectionId: number
+  ): Promise<ResponseType[] | []> {
+    try {
+      const response = await axios.get(`${this.serverUrl}subsection-details/`, {
+        params: {
+          subsection_id: subsectionId,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching subsection details:", error);
       return [];
     }
   }

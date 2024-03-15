@@ -44,7 +44,7 @@ class AppView {
   }
 
   public setButtonHandler(
-    type: "Bank" | "Product" | "Category" | "Subsections"
+    type: "Bank" | "Product" | "Category" | "Subsections" | "SubsectionDetails"
   ): void {
     this.knowledgeBase.setButtonHandler(this.knowledgeBase.tag, type);
   }

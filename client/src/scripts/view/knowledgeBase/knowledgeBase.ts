@@ -10,7 +10,7 @@ class KnowledgeBase {
 
   public setButtonHandler(
     tag: HTMLElement,
-    type: "Bank" | "Product" | "Category" | "Subsections"
+    type: "Bank" | "Product" | "Category" | "Subsections" | "SubsectionDetails"
   ): void {
     tag.childNodes.forEach((node) => {
       if (node instanceof HTMLElement) {
@@ -34,6 +34,11 @@ class KnowledgeBase {
             case "Subsections": {
               node.setAttribute("href", "#subsection-details");
               localStorage.setItem("subsection", node.id);
+              break;
+            }
+            case "SubsectionDetails": {
+              node.setAttribute("href", `#${node.id}-details`);
+              localStorage.setItem("subsection-details", node.id);
               break;
             }
           }
