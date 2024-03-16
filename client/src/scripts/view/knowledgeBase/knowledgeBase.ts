@@ -13,7 +13,7 @@ class KnowledgeBase {
     this.buttonsTag.classList.add("base__buttons");
 
     this.contentTag = document.createElement("div");
-    this.contentTag.classList.add("base__content");
+    this.contentTag.classList.add("base__content", "hidden");
 
     this.tag.append(this.buttonsTag, this.contentTag);
   }
@@ -64,6 +64,7 @@ class KnowledgeBase {
 
     this.tag.appendChild(h1);
   }
+
   public drawButtons(items: DataType[] | [], isList?: boolean): void {
     while (this.buttonsTag.firstChild) {
       this.buttonsTag.removeChild(this.buttonsTag.firstChild);
@@ -80,6 +81,8 @@ class KnowledgeBase {
 
       const button: HTMLDivElement = document.createElement("div");
       this.buttonsTag.className = "base__buttons";
+      this.contentTag.classList.add("hidden");
+
       button.className = "button";
       button.textContent = item.nameRus;
 
@@ -88,6 +91,7 @@ class KnowledgeBase {
 
       if (isList) {
         this.buttonsTag.className = "base__buttons_list";
+        this.contentTag.classList.remove("hidden");
         button.className = "button__thin";
       }
     });
@@ -95,4 +99,3 @@ class KnowledgeBase {
 }
 
 export default KnowledgeBase;
-
