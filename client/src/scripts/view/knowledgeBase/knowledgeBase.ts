@@ -65,6 +65,18 @@ class KnowledgeBase {
     this.tag.appendChild(h1);
   }
 
+  public drawTable(): void {
+    const figure = document.createElement("figure");
+    const table = document.createElement("table");
+    const tbody = document.createElement("tbody");
+
+    figure.classList.add("table-container");
+
+    table.appendChild(tbody);
+    figure.appendChild(table);
+    this.contentTag.appendChild(figure);
+  }
+
   public drawButtons(items: DataType[] | [], isList?: boolean): void {
     while (this.buttonsTag.firstChild) {
       this.buttonsTag.removeChild(this.buttonsTag.firstChild);
