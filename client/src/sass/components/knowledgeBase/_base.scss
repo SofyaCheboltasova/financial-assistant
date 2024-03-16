@@ -1,8 +1,17 @@
 .base__wrapper {
   max-width: 1440px;
-  height: 100%;
-  margin: 0 auto;
+  height: 100vh;
+  overflow: hidden;
   padding: 5rem 0;
+
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $color-text-light;
+    border-radius: 5px;
+  }
 }
 
 .base__buttons {
@@ -20,7 +29,9 @@
 
 .base__buttons_list {
   @include flex($direction: column, $gap: 5rem);
-  height: unset;
   width: fit-content;
-  padding-bottom: 5rem;
+  padding: 2rem 40px 10rem 40px;
+
+  height: 100vh;
+  overflow-y: scroll;
 }
