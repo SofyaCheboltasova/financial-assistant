@@ -2,6 +2,7 @@ import KnowledgeBase from "./knowledgeBase/knowledgeBase";
 import Home from "./home/home";
 import Assistant from "./assistant/assistant";
 import DataType from "../contracts/types";
+import { TableData } from "../contracts/interfaces";
 
 /**
  * Call methods for drawing HTML and append new tag to main tag
@@ -48,6 +49,10 @@ class AppView {
 
     this.clearMainTag();
     this.appendToMainTag(this.knowledgeBase.tag);
+  }
+
+  public drawKnowledgeBaseTable(data: TableData[] | []): void {
+    this.knowledgeBase.fillTable(data);
   }
 
   public setButtonHandler(

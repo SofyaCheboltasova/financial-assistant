@@ -1,9 +1,11 @@
+import { TableData } from "../../contracts/interfaces";
 import DataType from "../../contracts/types";
 
 class KnowledgeBase {
   public tag: HTMLDivElement;
   public buttonsTag: HTMLDivElement;
   public contentTag: HTMLDivElement;
+  private tbody: HTMLTableSectionElement;
 
   constructor() {
     this.tag = document.createElement("div");
@@ -15,6 +17,15 @@ class KnowledgeBase {
     this.contentTag = document.createElement("div");
     this.contentTag.classList.add("base__content", "hidden");
 
+    const figure = document.createElement("figure");
+    figure.classList.add("table-container");
+
+    const table = document.createElement("table");
+    this.tbody = document.createElement("tbody");
+
+    table.appendChild(this.tbody);
+    figure.appendChild(table);
+    this.contentTag.appendChild(figure);
     this.tag.append(this.buttonsTag, this.contentTag);
   }
 
@@ -47,7 +58,7 @@ class KnowledgeBase {
               break;
             }
             case "SubsectionDetails": {
-              node.setAttribute("href", `#${node.id}-details`);
+              node.setAttribute("href", `#detailed-information`);
               localStorage.setItem("subsection-details", node.id);
               break;
             }
@@ -65,16 +76,27 @@ class KnowledgeBase {
     this.tag.appendChild(h1);
   }
 
-  public drawTable(): void {
-    const figure = document.createElement("figure");
-    const table = document.createElement("table");
-    const tbody = document.createElement("tbody");
+  public fillTable(rows: TableData[] | []): void {
+    while (this.tbody.firstChild) {
+      this.tbody.removeChild(this.tbody.firstChild);
+    }
 
-    figure.classList.add("table-container");
+    rows.forEach((row) => {
+      const { title, description, link } = row;
 
-    table.appendChild(tbody);
-    figure.appendChild(table);
-    this.contentTag.appendChild(figure);
+      const tr = document.createElement("tr");
+      const tTitle = document.createElement("th");
+      const tDesc = document.createElement("td");
+      const tLink = document.createElement("td");
+
+      tTitle.textContent = title;
+      tDesc.textContent = description;
+      tLink.textContent = link;
+
+      tr.append(tTitle, tDesc, tLink);
+
+      this.tbody.appendChild(tr);
+    });
   }
 
   public drawButtons(items: DataType[] | [], isList?: boolean): void {

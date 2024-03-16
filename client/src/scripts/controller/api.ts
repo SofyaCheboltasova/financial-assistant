@@ -1,5 +1,5 @@
 import axios from "../../../node_modules/axios/index";
-import { Categories, ResponseType } from "../contracts/interfaces";
+import { Categories, ResponseType, TableData } from "../contracts/interfaces";
 
 class Api {
   private serverUrl: string;
@@ -77,6 +77,25 @@ class Api {
       return response.data;
     } catch (error) {
       console.error("Error fetching subsection details:", error);
+      return [];
+    }
+  }
+
+  public async fetchDetailedInformation(
+    loanDetailId: number
+  ): Promise<TableData[] | []> {
+    try {
+      const response = await axios.get(
+        `${this.serverUrl}detailed-description/`,
+        {
+          params: {
+            loanDetail_id: loanDetailId,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching detailed information:", error);
       return [];
     }
   }

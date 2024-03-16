@@ -1,4 +1,4 @@
-import { ResponseType, Categories } from "../contracts/interfaces";
+import { ResponseType, Categories, TableData } from "../contracts/interfaces";
 import AppController from "../controller/controller";
 import AppView from "../view/appView";
 
@@ -73,6 +73,12 @@ class App {
           await this.controller.getSubsectionDetails();
         this.view.drawKnowledgeBaseList(subsectionDetails);
         this.view.setButtonHandler("SubsectionDetails");
+        break;
+      }
+      case "detailed-information": {
+        const detailedInformation: TableData[] | [] =
+          await this.controller.getDetailedInformation();
+        this.view.drawKnowledgeBaseTable(detailedInformation);
         break;
       }
       default: {

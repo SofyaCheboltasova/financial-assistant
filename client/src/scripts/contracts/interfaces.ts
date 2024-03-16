@@ -9,5 +9,12 @@ interface Categories extends ResponseType {
   productID: number;
 }
 
-export { ResponseType, Categories };
+interface TableData {
+  id: number;
+  title: string;
+  description: string;
+  link: string;
+}
+
+export { ResponseType, Categories, TableData };
 
