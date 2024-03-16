@@ -10,4 +10,5 @@ urlpatterns = [
 		path('products-categories/', views.get_product_categories, name='products_categories'),
 		path('loan-subsections/', views.get_loan_subsection, name='loan_subsection'),
 		path('subsection-details/', views.get_subsection_detail, name='subsection_details'),
+		path('detailed-description/', views.get_detailed_description, name='detailed_description'),
 ]

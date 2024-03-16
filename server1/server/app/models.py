@@ -30,3 +30,9 @@ class BankLoanSubsection(models.Model):
 class BankLoanDetail(models.Model):
     subsection_id = models.ForeignKey(BankLoanSubsection, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
+    
+class LoanDetailedDescription(models.Model):
+    loanDetail_id = models.ForeignKey(BankLoanDetail, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.CharField(max_length=10000)
+    link = models.CharField(max_length=1000)

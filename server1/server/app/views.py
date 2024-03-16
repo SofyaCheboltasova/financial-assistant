@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from .models import Bank, BankLoanDetail, BankLoanSubsection, FinancialProduct, ProductCategories
+from .models import Bank, BankLoanDetail, BankLoanSubsection, LoanDetailedDescription, FinancialProduct, ProductCategories
 
 def get_banks(request):
     banks = Bank.objects.all()
@@ -29,7 +29,7 @@ def get_loan_subsection(request):
         data = [{'id': subsection.id, 'nameRus': subsection.titleRus, 'nameEng': subsection.titleEng} for subsection in subsections]
         return JsonResponse(data, safe=False)
     else:
-        return JsonResponse({'error': 'Bank id and Product id are required.'}, status=400)
+        return JsonResponse({'error': 'Category id are required.'}, status=400)
     
 def get_subsection_detail(request):
     if 'subsection_id' in request.GET:
@@ -38,4 +38,13 @@ def get_subsection_detail(request):
         data = [{'id': detail.id, 'nameRus': detail.title} for detail in details]
         return JsonResponse(data, safe=False)
     else:
-        return JsonResponse({'error': 'Bank id and Product id are required.'}, status=400)
+        return JsonResponse({'error': 'Subsection id are required.'}, status=400)
+    
+def get_detailed_description(request):
+    if 'loanDetail_id' in request.GET:
+        loanDetail_id = request.GET['loanDetail_id']
+        details = LoanDetailedDescription.objects.filter(loanDetail_id=loanDetail_id)
+        data = [{'id': detail.id, 'title': detail.title, 'description': detail.description, 'link': detail.link} for detail in details]
+        return JsonResponse(data, safe=False)
+    else:
+        return JsonResponse({'error': 'Subsection detail id is required.'}, status=400)
