@@ -1,4 +1,37 @@
-.table-conteiner {
+.table {
+  color: $color-text-light;
+  font: $font-small;
+
   tr {
+    @include flex($justify-content: space-between);
+    margin-top: 2rem;
+    padding: 2rem;
+    border-radius: 5px;
+  }
+
+  tr:nth-child(2n + 1) {
+    background-color: $color-container;
+  }
+
+  th {
+    width: 20rem;
+    text-align: left;
   }
 }
+
+.table__link {
+  cursor: pointer;
+  white-space: nowrap;
+  font-style: italic;
+
+  &:hover {
+    color: $color-text-accent;
+  }
+}
+
+.table__description {
+  width: 100%;
+  padding: 0 3rem;
+  text-align: justify;
+}
+

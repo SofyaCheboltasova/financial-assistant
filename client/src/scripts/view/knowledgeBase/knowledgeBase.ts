@@ -17,15 +17,13 @@ class KnowledgeBase {
     this.contentTag = document.createElement("div");
     this.contentTag.classList.add("base__content", "hidden");
 
-    const figure = document.createElement("figure");
-    figure.classList.add("table-container");
-
     const table = document.createElement("table");
+    table.classList.add("table");
+
     this.tbody = document.createElement("tbody");
 
     table.appendChild(this.tbody);
-    figure.appendChild(table);
-    this.contentTag.appendChild(figure);
+    this.contentTag.appendChild(table);
     this.tag.append(this.buttonsTag, this.contentTag);
   }
 
@@ -83,17 +81,30 @@ class KnowledgeBase {
 
     rows.forEach((row) => {
       const { title, description, link } = row;
+      const descWithBr = description
+        .replace(/\n/g, "<br>")
+        .replace(/\*/g, "<i>* ")
+        .replace(/(\d+\.\s.*?:)/g, "<b>$1</b>")
+        .replace(/\-/g, "	•");
 
       const tr = document.createElement("tr");
       const tTitle = document.createElement("th");
       const tDesc = document.createElement("td");
+      tDesc.classList.add("table__description");
+
       const tLink = document.createElement("td");
+      tLink.classList.add("table__link");
+      const a = document.createElement("a");
+
+      a.href = link;
+      a.target = "_blank";
+      a.appendChild(tLink);
 
       tTitle.textContent = title;
-      tDesc.textContent = description;
-      tLink.textContent = link;
+      tDesc.innerHTML = descWithBr;
+      tLink.textContent = "Ссылка на документ";
 
-      tr.append(tTitle, tDesc, tLink);
+      tr.append(tTitle, tDesc, a);
 
       this.tbody.appendChild(tr);
     });
