@@ -16,7 +16,7 @@ def get_product_categories(request):
     if 'bank_id' in request.GET and 'product_id' in request.GET:
         bank_id = request.GET['bank_id']
         product_id = request.GET['product_id']
-        categories = ProductCategories.objects.filter(bank_id=bank_id, product_id=product_id)
+        categories = ProductCategories.objects.filter(bank_id=bank_id, product_id=product_id).order_by('id')
         data = [{'id': category.id, 'nameRus': category.categoryNameRus, 'nameEng': category.categoryNameEng} for category in categories]
         return JsonResponse(data, safe=False)
     else:
@@ -25,7 +25,7 @@ def get_product_categories(request):
 def get_loan_subsection(request):
     if 'category_id' in request.GET:
         category_id = request.GET['category_id']
-        subsections = BankLoanSubsection.objects.filter(category_id=category_id)
+        subsections = BankLoanSubsection.objects.filter(category_id=category_id).order_by('id')
         data = [{'id': subsection.id, 'nameRus': subsection.titleRus, 'nameEng': subsection.titleEng} for subsection in subsections]
         return JsonResponse(data, safe=False)
     else:
@@ -34,7 +34,7 @@ def get_loan_subsection(request):
 def get_subsection_detail(request):
     if 'subsection_id' in request.GET:
         subsection_id = request.GET['subsection_id']
-        details = BankLoanDetail.objects.filter(subsection_id=subsection_id)
+        details = BankLoanDetail.objects.filter(subsection_id=subsection_id).order_by('id')
         data = [{'id': detail.id, 'nameRus': detail.title} for detail in details]
         return JsonResponse(data, safe=False)
     else:
@@ -43,7 +43,7 @@ def get_subsection_detail(request):
 def get_detailed_description(request):
     if 'loanDetail_id' in request.GET:
         loanDetail_id = request.GET['loanDetail_id']
-        details = LoanDetailedDescription.objects.filter(loanDetail_id=loanDetail_id)
+        details = LoanDetailedDescription.objects.filter(loanDetail_id=loanDetail_id).order_by('id')
         data = [{'id': detail.id, 'title': detail.title, 'description': detail.description, 'link': detail.link} for detail in details]
         return JsonResponse(data, safe=False)
     else:
