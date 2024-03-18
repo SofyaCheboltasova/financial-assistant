@@ -83,8 +83,7 @@ class KnowledgeBase {
       const { title, description, link } = row;
       const descWithBr = description
         .replace(/\n/g, "<br>")
-        .replace(/\*/g, "<i>* ")
-        .replace(/(\d+\.\s.*?:)/g, "<b>$1</b>")
+        .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
         .replace(/\-/g, "	•");
 
       const tr = document.createElement("tr");

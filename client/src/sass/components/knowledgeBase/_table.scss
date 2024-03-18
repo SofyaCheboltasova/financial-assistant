@@ -1,6 +1,7 @@
 .table {
   color: $color-text-light;
   font: $font-small;
+  line-height: 2.5rem;
 
   tr {
     @include flex($justify-content: space-between);
