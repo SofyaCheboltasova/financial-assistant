@@ -3,6 +3,7 @@ import Home from "./home/home";
 import Assistant from "./assistant/assistant";
 import DataType from "../contracts/types";
 import { TableData } from "../contracts/interfaces";
+import EventObserver from "../observer/observer";
 
 /**
  * Call methods for drawing HTML and append new tag to main tag
@@ -14,9 +15,9 @@ class AppView {
   private knowledgeBase: KnowledgeBase;
   private mainTag: HTMLElement;
 
-  constructor() {
+  constructor(eventObserver: EventObserver) {
     this.home = new Home();
-    this.assistant = new Assistant();
+    this.assistant = new Assistant(eventObserver);
     this.knowledgeBase = new KnowledgeBase();
     this.mainTag = this.home.main;
   }

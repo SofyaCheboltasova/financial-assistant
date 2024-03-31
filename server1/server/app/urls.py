@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, assistantViews
 
 urlpatterns = [
     path('banks/', views.get_banks, name='banks'),
@@ -8,4 +8,6 @@ urlpatterns = [
 		path('loan-subsections/', views.get_loan_subsection, name='loan_subsection'),
 		path('subsection-details/', views.get_subsection_detail, name='subsection_details'),
 		path('detailed-description/', views.get_detailed_description, name='detailed_description'),
+		path('get-loan-rate/', assistantViews.get_loan_rate, name='get_loan_rate'),
+
 ]

@@ -1,4 +1,5 @@
 import { Categories, ResponseType } from "../contracts/interfaces";
+import EventObserver from "../observer/observer";
 import Api from "./api";
 
 /**
@@ -7,9 +8,22 @@ import Api from "./api";
 
 class AppController {
   private api: Api;
+  private eventObserver: EventObserver;
 
-  constructor() {
+  constructor(eventObserver: EventObserver) {
     this.api = new Api();
+    this.eventObserver = eventObserver;
+    // this.eventObserver.subscribe(
+    //   "enterPressed",
+    //   this.getAssistantAnswer.bind(this)
+    // );
+  }
+
+  public subscribeToAssistantEvents() {
+    this.eventObserver.subscribe(
+      "enterPressed",
+      this.getAssistantAnswer.bind(this)
+    );
   }
 
   public async getBanks(): Promise<ResponseType[] | []> {
@@ -63,6 +77,12 @@ class AppController {
       Number(detailId)
     );
     return detailedInfo;
+  }
+
+  public async getAssistantAnswer(query: string) {
+    const answer = await this.api.getLoanRate(query);
+    this.eventObserver.notify("assistantAnswer", answer);
+    return answer;
   }
 }
 

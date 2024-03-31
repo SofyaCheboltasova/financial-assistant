@@ -1,17 +1,21 @@
 import { ResponseType, Categories, TableData } from "../contracts/interfaces";
 import AppController from "../controller/controller";
+import EventObserver from "../observer/observer";
 import AppView from "../view/appView";
 
 class App {
   private controller: AppController;
   private view: AppView;
+  private eventObserver: EventObserver;
 
   public url: URL;
   public currentPage: string;
 
   constructor() {
-    this.controller = new AppController();
-    this.view = new AppView();
+    this.eventObserver = new EventObserver();
+
+    this.controller = new AppController(this.eventObserver);
+    this.view = new AppView(this.eventObserver);
 
     this.url = new URL("http://localhost:8080/");
     this.currentPage = this.url.hash;
@@ -39,6 +43,7 @@ class App {
     switch (this.currentPage) {
       case "assistant": {
         this.view.setAssistantPage();
+        this.controller.subscribeToAssistantEvents();
         break;
       }
       case "banks": {

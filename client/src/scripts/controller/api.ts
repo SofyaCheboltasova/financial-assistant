@@ -99,6 +99,18 @@ class Api {
       return [];
     }
   }
+
+  public async getLoanRate(query: string): Promise<ResponseType | null> {
+    try {
+      const response = await axios.get(
+        `${this.serverUrl}get-loan-rate/?q=${encodeURIComponent(query)}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error getting loan rate:", error);
+      return null;
+    }
+  }
 }
 
 export default Api;
