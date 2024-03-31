@@ -1,13 +1,18 @@
 .assistant__wrapper {
   max-width: 1440px;
-  @include flex($justify-content: center);
+  height: 100vh;
+  @include flex(
+    $direction: column,
+    $justify-content: flex-end,
+    $align-items: center
+  );
   margin: 0 auto;
 }
 
 .assistant__form {
   width: 50%;
-  position: fixed;
   bottom: 50px;
+  margin-top: 2rem;
 }
 
 .assistant__textarea {
@@ -21,23 +26,26 @@
 
   font: $font-medium;
   padding: 10px;
+
+  overflow: hidden;
 }
 
 .assistant__dialog {
-  position: fixed;
-  bottom: calc(6rem + 50px);
-  height: 100%;
   width: 50%;
   margin: 0 auto;
-  padding-bottom: 2rem;
+  padding: 0 2rem;
 
-  @include flex($direction: column, $justify-content: flex-end);
+  @include flex($direction: column);
 
-  ::-webkit-scrollbar {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-top: 3rem;
+
+  &::-webkit-scrollbar {
     width: 3px;
   }
 
-  ::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     background-color: $color-text-light;
     border-radius: 5px;
   }
