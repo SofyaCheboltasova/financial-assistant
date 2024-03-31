@@ -1,7 +1,7 @@
 .assistant__wrapper {
   max-width: 1440px;
-  height: 100%;
   @include flex($justify-content: center);
+  margin: 0 auto;
 }
 
 .assistant__form {
@@ -21,5 +21,25 @@
 
   font: $font-medium;
   padding: 10px;
+}
+
+.assistant__dialog {
+  position: fixed;
+  bottom: calc(6rem + 50px);
+  height: 100%;
+  width: 50%;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+
+  @include flex($direction: column, $justify-content: flex-end);
+
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: $color-text-light;
+    border-radius: 5px;
+  }
 }
 
