@@ -55,14 +55,12 @@ class Assistant {
   private setAssistantMessage(inputText: string) {
     const message = document.createElement("div");
     message.classList.add("message__assistant");
-    message.textContent = inputText;
+    message.innerHTML = inputText;
     this.dialog.appendChild(message);
   }
 
-  private handleApiCall(data: string): void {
-    console.error("Данные из API:", data);
-
-    const editedMessage = data
+  private handleApiCall(response: string): void {
+    const editedMessage = response
       .replace(/\n/g, "<br>")
       .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
       .replace(/\-/g, "	•");
