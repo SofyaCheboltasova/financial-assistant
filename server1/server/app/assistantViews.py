@@ -1,3 +1,4 @@
+import re
 from django.http import JsonResponse
 from .models import Bank, FinancialProduct, LoanDetailedDescription, ProductCategories
 
@@ -102,6 +103,7 @@ def get_request_embeddings(texts):
 def get_text_embeddings(texts, index_file="faiss_index.pkl", tensor_file="text_tensor.pt"):
   try:
     text_tensor = torch.load(tensor_file)
+    print('get embeddings from file')
   except (FileNotFoundError, EOFError):
     try:
       with open(index_file, 'rb') as f:
@@ -114,11 +116,12 @@ def get_text_embeddings(texts, index_file="faiss_index.pkl", tensor_file="text_t
         text_embeddings = dict(zip(texts, embeddings))
       with open(index_file, 'wb') as f:
         pickle.dump(text_embeddings, f)
+        
+    text_tensor = torch.stack([text_embeddings[text] for text in texts])
+    torch.save(text_tensor, tensor_file)
+    print('end creating embeddings from file')
 
-      text_tensor = torch.stack([text_embeddings[text] for text in texts])
-      torch.save(text_tensor, tensor_file)
-
-    return text_tensor
+  return text_tensor
 
 
 def save_db_texts(db_texts, filename='db_texts.pkl'):
@@ -139,10 +142,11 @@ def get_db_texts():
   if not db_texts:
     db_texts = load_db_texts()
     if not db_texts:
-      loan_descriptions = LoanDetailedDescription.objects.values_list('description', flat=True)
-      db_texts = list(loan_descriptions)
+      loan_descriptions = LoanDetailedDescription.objects.all()
+      db_texts = [f"{description.title}:\n {description.description}" for description in loan_descriptions]
       save_db_texts(db_texts)
   return db_texts
+
 
 
 def find_relevant_texts(user_query, db_embeddings, data):    
@@ -155,6 +159,25 @@ def find_relevant_texts(user_query, db_embeddings, data):
   return relevant_texts
 
 
+def check_string_match(query, texts):
+    query_tokens = nltk.word_tokenize(query)
+    query_lemmas = filter_lemmas(query_tokens)
+    query_lemmas_str = ' '.join(query_lemmas)
+    query_words = set(to_nominative_case(re.findall(r'\w+', query_lemmas_str)))
+    match_counts = {}
+    
+    for text in texts:
+      tokens = nltk.word_tokenize(text)
+      lemmas = filter_lemmas(tokens)
+      lemmas_str = ' '.join(lemmas)
+      text_words = set(to_nominative_case(re.findall(r'\w+', lemmas_str)))
+      intersection = text_words.intersection(query_words)
+      print('MATCHES: ',len(intersection), '----', text, '\n\n\n')
+      match_counts[text] = len(intersection)
+    
+    max_matching_texts = [text for text, count in match_counts.items() if count == max(match_counts.values())]
+    
+    return max_matching_texts[0]
 
 def get_loan_rate(request):
   query = request.GET.get('q')
@@ -167,14 +190,24 @@ def get_loan_rate(request):
   query_vector = sentence_transform_model.encode([query])
   distances, indices = nbrs.kneighbors(query_vector)
   relevant_texts1 = [relevant_texts[i] for i in indices[0]]
+  
+  answer = check_string_match(query, relevant_texts1)
+  response_data = {
+    "data": answer
+  }
 
-  for i, text in enumerate(reversed(relevant_texts1)):
-    if i == 0: 
-      response_data = {
-        "data": text
-    	}
-    if i == 5: break
+  # relevant_answers = []
+
+  # for i, text in enumerate(reversed(relevant_texts1)):
+  #   if i == 0: 
+  #     response_data = {
+  #       "data": text
+  #   	}
+  #   relevant_answers.append(text)
+  #   print(i, ' : ', text, '\n')
+  #   if i == 20: break
     
+
   return JsonResponse(response_data)
 
     # tokens = nltk.word_tokenize(query)

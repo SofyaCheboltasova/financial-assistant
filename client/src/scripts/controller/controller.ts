@@ -13,10 +13,6 @@ class AppController {
   constructor(eventObserver: EventObserver) {
     this.api = new Api();
     this.eventObserver = eventObserver;
-    // this.eventObserver.subscribe(
-    //   "enterPressed",
-    //   this.getAssistantAnswer.bind(this)
-    // );
   }
 
   public subscribeToAssistantEvents() {
@@ -82,7 +78,6 @@ class AppController {
   public async getAssistantAnswer(query: string) {
     const answer = await this.api.getLoanRate(query);
     this.eventObserver.notify("assistantAnswer", answer);
-    return answer;
   }
 }
 
