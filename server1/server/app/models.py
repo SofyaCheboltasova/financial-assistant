@@ -36,3 +36,6 @@ class LoanDetailedDescription(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=10000)
     link = models.CharField(max_length=1000)
+    bank_id = models.ForeignKey(Bank, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(FinancialProduct, on_delete=models.CASCADE)
+    category_id = models.ForeignKey(ProductCategories, on_delete=models.CASCADE)

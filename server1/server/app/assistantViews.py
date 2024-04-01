@@ -57,11 +57,9 @@ def to_nominative_case(words):
         nominative_words.append(nominative_word)
     return nominative_words
 
-
 def get_financial_products():
     financial_products = FinancialProduct.objects.all()
     return financial_products
-
 
 def determine_financial_product(lemmas):
     products = get_financial_products()
@@ -72,7 +70,6 @@ def determine_financial_product(lemmas):
                 return product
                 
     return None
-
 
 def determine_category(bank_id, product_id, lemmas):
     categories = ProductCategories.objects.filter(bank_id=bank_id, product_id=product_id).order_by('id')
@@ -119,7 +116,6 @@ def get_text_embeddings(texts, index_file="faiss_index.pkl", tensor_file="text_t
         
     text_tensor = torch.stack([text_embeddings[text] for text in texts])
     torch.save(text_tensor, tensor_file)
-    print('end creating embeddings from file')
 
   return text_tensor
 
@@ -143,7 +139,11 @@ def get_db_texts():
     db_texts = load_db_texts()
     if not db_texts:
       loan_descriptions = LoanDetailedDescription.objects.all()
-      db_texts = [f"{description.title}:\n {description.description}" for description in loan_descriptions]
+      # category_details = [description.loanDetail_id for description in loan_descriptions]
+      # subsections = [category_detail.subsection_id for category_detail in category_details]
+      # categories_id = [subsection.category_id for subsection in subsections]
+            
+      db_texts = [f"{description.title}\n {description.description}" for description in loan_descriptions]
       save_db_texts(db_texts)
   return db_texts
 
@@ -172,7 +172,6 @@ def check_string_match(query, texts):
       lemmas_str = ' '.join(lemmas)
       text_words = set(to_nominative_case(re.findall(r'\w+', lemmas_str)))
       intersection = text_words.intersection(query_words)
-      print('MATCHES: ',len(intersection), '----', text, '\n\n\n')
       match_counts[text] = len(intersection)
     
     max_matching_texts = [text for text, count in match_counts.items() if count == max(match_counts.values())]
