@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from app import views, assistantViews
+from server1.server.app import retriever
 
 urlpatterns = [
 		# path('/',  views.index, name='index'),
@@ -12,5 +13,5 @@ urlpatterns = [
 		path('loan-subsections/', views.get_loan_subsection, name='loan_subsection'),
 		path('subsection-details/', views.get_subsection_detail, name='subsection_details'),
 		path('detailed-description/', views.get_detailed_description, name='detailed_description'),
-		path('get-loan-rate/', assistantViews.get_loan_rate, name='get_loan_rate'),
+		path('get-loan-rate/', retriever.get_loan_rate, name='get_loan_rate'),
 ]
