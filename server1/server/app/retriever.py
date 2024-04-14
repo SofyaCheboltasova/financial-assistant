@@ -80,7 +80,7 @@ def get_db_texts():
 
 
 # 2. Сохранение векторов в файл, загрузка векторов
-def load_vectors(texts, indexies):
+def load_dense_vectors(indexies):
     try:
         vecs_texts = np.load('vecs_texts.npy')
     except FileNotFoundError:
@@ -97,7 +97,6 @@ def load_vectors(texts, indexies):
 
   
 # 4. Поиск именованных сущностей в запросе, фильтрация векторов => получение массива id релевантных текстов
-
 def get_banks_products():
     banks = Bank.objects.all()
     financial_products = FinancialProduct.objects.all()
@@ -149,14 +148,13 @@ def filter_texts_by_NE(query, texts):
     else: return filtered_indices
 
 # 6. проверка на сходство => получение массива id топК векторов 
-def retriever(query, vectors):
+def DenseRetriever(query, vectors):
     top_k = 10
     vec_query = model.encode(query, convert_to_tensor=True)
     sim = util.pytorch_cos_sim(vec_query, vectors)[0]    
-    top_indices = np.argsort(-sim)[:top_k]
+    top_indices = np.argsort(-sim)[:top_k].tolist()
       
     return top_indices
-   
 
 # 7. Извлечение из бд по массиву   
 def load_texts_by_indices(db_texts, indices):
@@ -168,22 +166,92 @@ def load_texts_by_indices(db_texts, indices):
     return topK_texts
 
 
+from rank_bm25 import BM25Okapi
+
+def SparseRetriever(query, filtered_indices):
+    tokenized_corpus = []
+    texts = []
+    with open('db_texts.csv', 'r', encoding='utf-8') as csvfile:
+      reader = csv.DictReader(csvfile)
+      for i, row in enumerate(reader):
+        texts.append(f"{i} {row['preprocessed']}")
+
+    for index in filtered_indices:
+      tokenized_corpus.append(texts[index].split(' '))
+
+
+    bm25 = BM25Okapi(tokenized_corpus)
+    tokenized_query = query.split(" ")
+    top_results = bm25.get_top_n(tokenized_query, tokenized_corpus, n=10)
+    
+    topK_sparse_vectors_ids = [int(text[0]) for text in top_results]
+    return topK_sparse_vectors_ids
+
+def rankTexts(dense_ids, sparse_ids):
+    text_ratings = {}
+    max_penalty = max(len(dense_ids), len(sparse_ids)) + 1
+
+    for i, text_id in enumerate(dense_ids):
+        rating = i + 1 
+        if text_id in sparse_ids:
+            rating += sparse_ids.index(text_id) + 1 
+            rating /= 2 
+        else:
+            rating += max_penalty 
+        text_ratings[text_id] = rating
+
+    for i, text_id in enumerate(sparse_ids):
+        if text_id not in text_ratings:
+            rating = i + 1 + max_penalty
+            text_ratings[text_id] = rating
+
+    sorted_texts = sorted(text_ratings.items(), key=lambda x: x[1])
+    return [text_id for text_id, rating in sorted_texts]
+     
+from langchain.retrievers import EnsembleRetriever
+from langchain_community.retrievers import BM25Retriever
+from langchain_community.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
+import os
+
 def get_loan_rate(request):
   prepocessed_db_texts = get_db_texts()
-
   query = request.GET.get('q')
-  preprocessed_query = preprocessing(query)  
+  preprocessed_query = preprocessing(query)
+  
+  
+  bm25_retriever = BM25Retriever.from_texts(prepocessed_db_texts)
+  bm25_retriever.k = 10
+
+  embedding = HuggingFaceEmbeddings(model_name=model_id)
+
+  faiss_vectorstore = FAISS.from_texts(prepocessed_db_texts, embedding)
+  faiss_retriever = faiss_vectorstore.as_retriever(search_kwargs={"k": 10})
+  faiss_vectorstore.save_local('faiss_index')
+
+  ensemble_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, faiss_retriever], weights=[0.5, 0.5]
+  )
+
+
+  docs = ensemble_retriever.invoke(query)
+  print(docs)
+  
+	# 
   
   filtered_indices = filter_texts_by_NE(preprocessed_query, prepocessed_db_texts)
-  filtered_vectors = load_vectors(prepocessed_db_texts, filtered_indices)
+  filtered_dense_vectors = load_dense_vectors(filtered_indices)
   
-  topK_vectors_ids = retriever(preprocessed_query, filtered_vectors)
-  topK_texts = load_texts_by_indices(prepocessed_db_texts, topK_vectors_ids)
+  topK_dense_vectors_ids = DenseRetriever(preprocessed_query, filtered_dense_vectors)  
+  topK_sparse_vectors_ids = SparseRetriever(preprocessed_query, filtered_indices)
   
-  for text in topK_texts:
-     print(text, '\n\n\n\n\n')
+  # topK_dense_texts = load_texts_by_indices(prepocessed_db_texts, topK_dense_vectors_ids)
+  # topK_sparse_texts = load_texts_by_indices(prepocessed_db_texts, topK_sparse_vectors_ids)
+  
+  ranked_ids = rankTexts(topK_dense_vectors_ids, topK_sparse_vectors_ids)
+  ranked_texts = load_texts_by_indices(prepocessed_db_texts, ranked_ids)
  
   response_data = {
-    "data": topK_texts[0]
+     "data": ranked_texts[0]
   }
   return JsonResponse(response_data)  

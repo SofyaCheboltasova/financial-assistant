@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from app import views, assistantViews
-from server1.server.app import retriever
+from app import views, retriever
 
 urlpatterns = [
 		# path('/',  views.index, name='index'),
