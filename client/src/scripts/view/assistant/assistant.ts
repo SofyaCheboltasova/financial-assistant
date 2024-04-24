@@ -64,12 +64,11 @@ class Assistant {
     return div;
   }
 
-  private setAssistantMessage(
+  private getInfoBlock(
     bank: string,
     category: string,
-    title: string,
-    upperCaseAnswer: string
-  ) {
+    title: string
+  ): HTMLDivElement {
     const bankBlock = this.highlightCategory(bank, "highlight__blue");
     const categoryBlock = this.highlightCategory(category, "highlight__green");
     const titleBlock = this.highlightCategory(title, "highlight__orange");
@@ -77,7 +76,16 @@ class Assistant {
     const infoBlock = document.createElement("div");
     infoBlock.classList.add("highlight_block");
     infoBlock.append(bankBlock, categoryBlock, titleBlock);
+    return infoBlock;
+  }
 
+  private setAssistantMessage(
+    bank: string,
+    category: string,
+    title: string,
+    upperCaseAnswer: string
+  ) {
+    const infoBlock = this.getInfoBlock(bank, category, title);
     const textBlock = document.createElement("div");
     textBlock.innerHTML = upperCaseAnswer;
 
