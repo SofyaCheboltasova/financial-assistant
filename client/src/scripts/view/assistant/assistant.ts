@@ -1,3 +1,4 @@
+import { AssistantAnswer } from "../../contracts/interfaces";
 import EventObserver from "../../observer/observer";
 
 class Assistant {
@@ -52,22 +53,56 @@ class Assistant {
     }
   }
 
-  private setAssistantMessage(inputText: string) {
-    const message = document.createElement("div");
-    message.classList.add("message__assistant");
-    message.innerHTML = inputText;
-    this.dialog.appendChild(message);
+  private highlightCategory(data: string, className: string): HTMLDivElement {
+    const div: HTMLDivElement = document.createElement("div");
+    div.classList.add("highlight", className);
+    data.replace(data.charAt(0), data.charAt(0).toUpperCase());
+    div.textContent = data.replace(
+      data.charAt(0),
+      data.charAt(0).toUpperCase()
+    );
+    return div;
   }
 
-  private handleApiCall(response: string): void {
-    const editedMessage = response
+  private setAssistantMessage(
+    bank: string,
+    category: string,
+    title: string,
+    upperCaseAnswer: string
+  ) {
+    const bankBlock = this.highlightCategory(bank, "highlight__blue");
+    const categoryBlock = this.highlightCategory(category, "highlight__green");
+    const titleBlock = this.highlightCategory(title, "highlight__orange");
+
+    const infoBlock = document.createElement("div");
+    infoBlock.classList.add("highlight_block");
+    infoBlock.append(bankBlock, categoryBlock, titleBlock);
+
+    const textBlock = document.createElement("div");
+    textBlock.innerHTML = upperCaseAnswer;
+
+    const message = document.createElement("div");
+    message.classList.add("message__assistant");
+    message.append(infoBlock, textBlock);
+
+    this.dialog.append(message);
+  }
+
+  private handleApiCall(response: AssistantAnswer): void {
+    const { bank, category, title, answer } = response;
+
+    const answerMetadata = [bank, category, title];
+    for (const data of answerMetadata) {
+      data.replace(data.charAt(0), data.charAt(0).toUpperCase());
+    }
+
+    const upperCaseAnswer = answer
       .replace(/\n/g, "<br>")
       .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
       .replace(/\-/g, "	•");
 
-    this.setAssistantMessage(editedMessage);
+    this.setAssistantMessage(bank, category, title, upperCaseAnswer);
   }
 }
 
 export default Assistant;
-

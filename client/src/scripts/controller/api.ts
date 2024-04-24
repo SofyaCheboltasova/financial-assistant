@@ -105,7 +105,7 @@ class Api {
       const response = await axios.get(
         `${this.serverUrl}get-loan-rate/?q=${encodeURIComponent(query)}`
       );
-      return response.data.data;
+      return response.data;
     } catch (error) {
       console.error("Error getting loan rate:", error);
       return null;
@@ -114,4 +114,3 @@ class Api {
 }
 
 export default Api;
-

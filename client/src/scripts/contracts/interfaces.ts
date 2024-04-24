@@ -16,5 +16,11 @@ interface TableData {
   link: string;
 }
 
-export { ResponseType, Categories, TableData };
+interface AssistantAnswer {
+  bank: string;
+  category: string;
+  title: string;
+  answer: string;
+}
 
+export { ResponseType, Categories, TableData, AssistantAnswer };
