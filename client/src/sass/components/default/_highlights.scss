@@ -1,0 +1,25 @@
+.highlight {
+  border-radius: 10px;
+  width: fit-content;
+  padding: 0.5rem;
+}
+
+.highlight_block {
+  @include flex($direction: column, $gap: 1rem);
+}
+
+.highlight__blue {
+  border: 1px solid blue;
+  background-color: #85c7ff;
+}
+
+.highlight__orange {
+  border: 1px solid orange;
+  background-color: #dec9a4;
+}
+
+.highlight__green {
+  border: 1px solid green;
+  background-color: #90ca90;
+}
+

@@ -43,6 +43,12 @@
   color: black;
   align-self: flex-start;
 
+  @include flex(
+    $direction: column,
+    $justify-content: space-between,
+    $gap: 2rem
+  );
+
   &:before {
     left: -7px;
     width: 20px;
