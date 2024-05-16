@@ -1,0 +1,9 @@
+numpy
+sentence-transformers
+django
+nltk
+pymorphy2
+rank-bm25
+langchain
+langchain-community
+huggingface-hub
