@@ -79,25 +79,39 @@ class Assistant {
     return infoBlock;
   }
 
+  private getLinkBlock(link: string): HTMLDivElement {
+    const linkBlock = document.createElement("div");
+    const linkElement = document.createElement("a");
+    linkElement.textContent = "Документ";
+    linkElement.href = link;
+    linkElement.target = "_blank";
+    linkElement.classList.add("table__link");
+    linkBlock.append(linkElement);
+
+    return linkBlock;
+  }
+
   private setAssistantMessage(
     bank: string,
     category: string,
     title: string,
+    link: string,
     upperCaseAnswer: string
   ) {
     const infoBlock = this.getInfoBlock(bank, category, title);
+    const linkBlock = this.getLinkBlock(link);
     const textBlock = document.createElement("div");
     textBlock.innerHTML = upperCaseAnswer;
 
     const message = document.createElement("div");
     message.classList.add("message__assistant");
-    message.append(infoBlock, textBlock);
+    message.append(infoBlock, textBlock, linkBlock);
 
     this.dialog.append(message);
   }
 
   private handleApiCall(response: AssistantAnswer): void {
-    const { bank, category, title, answer } = response;
+    const { bank, category, title, answer, link } = response;
 
     const answerMetadata = [bank, category, title];
     for (const data of answerMetadata) {
@@ -109,7 +123,7 @@ class Assistant {
       .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
       .replace(/\-/g, "	•");
 
-    this.setAssistantMessage(bank, category, title, upperCaseAnswer);
+    this.setAssistantMessage(bank, category, title, link, upperCaseAnswer);
   }
 }
 
