@@ -100,10 +100,10 @@ class Api {
     }
   }
 
-  public async getLoanRate(query: string): Promise<ResponseType | null> {
+  public async assistant(query: string): Promise<ResponseType | null> {
     try {
       const response = await axios.get(
-        `${this.serverUrl}get-loan-rate/?q=${encodeURIComponent(query)}`
+        `${this.serverUrl}assistant/?q=${encodeURIComponent(query)}`
       );
       return response.data;
     } catch (error) {

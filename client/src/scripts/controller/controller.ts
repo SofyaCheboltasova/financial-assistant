@@ -76,7 +76,7 @@ class AppController {
   }
 
   public async getAssistantAnswer(query: string) {
-    const answer = await this.api.getLoanRate(query);
+    const answer = await this.api.assistant(query);
     this.eventObserver.notify("assistantAnswer", answer);
   }
 }
