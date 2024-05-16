@@ -21,6 +21,7 @@ interface AssistantAnswer {
   category: string;
   title: string;
   answer: string;
+  link: string;
 }
 
 export { ResponseType, Categories, TableData, AssistantAnswer };
