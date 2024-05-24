@@ -81,7 +81,7 @@ class Api {
     }
   }
 
-  public async fetchDetailedInformation(
+  public async fetchDetailedData(
     loanDetailId: number
   ): Promise<TableData[] | []> {
     try {
