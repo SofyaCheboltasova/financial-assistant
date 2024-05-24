@@ -1,5 +1,6 @@
 import { TableData } from "../../contracts/interfaces";
 import DataType from "../../contracts/types";
+import EventObserver from "../../observer/observer";
 
 class KnowledgeBase {
   public tag: HTMLDivElement;
@@ -27,51 +28,12 @@ class KnowledgeBase {
     this.tag.append(this.buttonsTag, this.contentTag);
   }
 
-  public setButtonHandler(
-    tag: HTMLElement,
-    type: "Bank" | "Product" | "Category" | "Subsections" | "SubsectionDetails"
-  ): void {
-    tag.childNodes.forEach((node) => {
-      if (node instanceof HTMLElement) {
-        node.addEventListener("click", () => {
-          switch (type) {
-            case "Bank": {
-              node.setAttribute("href", "#products");
-              localStorage.setItem("bank", node.id);
-              break;
-            }
-            case "Product": {
-              node.setAttribute("href", "#categories");
-              localStorage.setItem("product", node.id);
-              break;
-            }
-            case "Category": {
-              node.setAttribute("href", "#category-subsections");
-              localStorage.setItem("category", node.id);
-              break;
-            }
-            case "Subsections": {
-              node.setAttribute("href", "#subsection-details");
-              localStorage.setItem("subsection", node.id);
-              break;
-            }
-            case "SubsectionDetails": {
-              node.setAttribute("href", `#detailed-information`);
-              localStorage.setItem("subsection-details", node.id);
-              break;
-            }
-          }
-        });
-      }
-    });
-  }
-
-  private drawEmptyPage(): void {
+  private renderEmptyPage(): void {
     const h1: HTMLHeadingElement = document.createElement("h1");
     h1.classList.add("header");
     h1.textContent = "Извините, по выбранной категории нет данных";
 
-    this.tag.appendChild(h1);
+    this.buttonsTag.appendChild(h1);
   }
 
   public fillTable(rows: TableData[] | []): void {
@@ -115,7 +77,7 @@ class KnowledgeBase {
     }
 
     if (items.length === 0) {
-      this.drawEmptyPage();
+      this.renderEmptyPage();
       return;
     }
 
