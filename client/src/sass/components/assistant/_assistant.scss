@@ -13,6 +13,8 @@
   width: 50%;
   bottom: 50px;
   margin-top: 2rem;
+
+  @include flex($justify-content: flex-end, $align-items: center, $gap: 1rem);
 }
 
 .assistant__textarea {
@@ -28,6 +30,22 @@
   padding: 10px;
 
   overflow: hidden;
+}
+
+.assistant__send-button {
+  width: 10%;
+  height: 100%;
+  border-radius: 10px;
+  background: url("../assets/buttons/sendButton.svg") no-repeat;
+  background-size: contain;
+
+  cursor: pointer;
+
+  &:hover {
+    transition: all 0.3s ease;
+    background: url("../assets/buttons/sendButton-filled.svg") no-repeat;
+    background-size: contain;
+  }
 }
 
 .assistant__dialog {
