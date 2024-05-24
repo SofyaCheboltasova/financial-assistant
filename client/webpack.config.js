@@ -13,13 +13,13 @@ module.exports = {
         include: [path.resolve(__dirname, "src")],
         use: "ts-loader",
       },
-      // {
-      //   test: /\.(jpg|png|svg|json)$/,
-      //   type: "asset/resource",
-      //   generator: {
-      //     filename: "assets/[name][ext]",
-      //   },
-      // },
+      {
+        test: /\.(jpg|png|svg|json)$/,
+        type: "asset/resource",
+        generator: {
+          filename: "assets/[name][ext]",
+        },
+      },
       { test: /\.(woff|woff2)$/, use: { loader: "url-loader" } },
       {
         test: /\.(scss|css)$/,
@@ -36,6 +36,9 @@ module.exports = {
     publicPath: "/",
     filename: "bundle.js",
     path: path.resolve(__dirname, "public"),
+  },
+  devServer: {
+    historyApiFallback: true,
   },
 };
 
