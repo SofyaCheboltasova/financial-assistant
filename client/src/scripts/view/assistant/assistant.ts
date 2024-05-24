@@ -1,23 +1,26 @@
+import { EventTypes } from "../../contracts/enums";
 import { AssistantAnswer } from "../../contracts/interfaces";
 import EventObserver from "../../observer/observer";
 
 class Assistant {
   public tag: HTMLDivElement;
   private dialog: HTMLDivElement;
-  private eventObserver: EventObserver;
+  private observer: EventObserver;
+  private textField: HTMLTextAreaElement;
 
-  constructor(eventObserver: EventObserver) {
+  constructor() {
     this.tag = document.createElement("div");
     this.dialog = document.createElement("div");
+    this.textField = document.createElement("textarea");
 
-    this.eventObserver = eventObserver;
-    this.eventObserver.subscribe(
-      "assistantAnswer",
+    this.observer = new EventObserver();
+    this.observer.subscribe(
+      EventTypes.ASSISTANT_ANSWER,
       this.handleApiCall.bind(this)
     );
   }
 
-  public drawAssistantPage(): void {
+  public renderAssistantPage(): void {
     this.tag = document.createElement("div");
     this.tag.classList.add("assistant__wrapper");
 
@@ -27,11 +30,20 @@ class Assistant {
     const form = document.createElement("form");
     form.classList.add("assistant__form");
 
-    const textArea = document.createElement("textarea");
-    textArea.classList.add("assistant__textarea");
-    textArea.addEventListener("keydown", this.handleEnterPress.bind(this));
+    this.textField = document.createElement("textarea");
+    this.textField.classList.add("assistant__textarea");
+    this.textField.addEventListener(
+      "keydown",
+      this.handleEnterPress.bind(this)
+    );
 
-    form.appendChild(textArea);
+    const sendButton = document.createElement("div");
+    sendButton.classList.add("assistant__send-button");
+    sendButton.addEventListener("click", (event) =>
+      this.handleEnterPress(event as PointerEvent)
+    );
+
+    form.append(this.textField, sendButton);
     this.tag.append(this.dialog, form);
   }
 
@@ -42,14 +54,17 @@ class Assistant {
     this.dialog.appendChild(message);
   }
 
-  private handleEnterPress(event: KeyboardEvent): void {
-    if (event.key === "Enter") {
-      const inputText = (event.target as HTMLTextAreaElement).value;
+  private handleEnterPress(event: KeyboardEvent | PointerEvent): void {
+    if (
+      (event instanceof KeyboardEvent && event.key === "Enter") ||
+      event instanceof PointerEvent
+    ) {
+      event.preventDefault();
+      if (this.textField.value === "") return;
+      this.setUserMessage(this.textField.value);
 
-      this.setUserMessage(inputText);
-
-      this.eventObserver.notify("enterPressed", inputText);
-      (event.target as HTMLTextAreaElement).value = "";
+      this.observer.notify(EventTypes.ENTER_PRESSED, this.textField.value);
+      this.textField.value = "";
     }
   }
 
