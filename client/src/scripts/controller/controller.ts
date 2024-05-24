@@ -1,85 +1,77 @@
-import { Categories, ResponseType } from "../contracts/interfaces";
+import Router from "../app/route";
+import { EventTypes, Links } from "../contracts/enums";
+import Model from "../model/model";
 import EventObserver from "../observer/observer";
-import Api from "./api";
+import View from "../view/view";
 
-/**
- * Gets data from the API and returns it to App class
- */
+class Controller {
+  private view: View;
+  private model: Model;
+  private observer: EventObserver;
+  public searchParams: URLSearchParams | null = null;
 
-class AppController {
-  private api: Api;
-  private eventObserver: EventObserver;
-
-  constructor(eventObserver: EventObserver) {
-    this.api = new Api();
-    this.eventObserver = eventObserver;
+  constructor(observer: EventObserver, router: Router) {
+    this.observer = observer;
+    this.view = new View(observer);
+    this.model = new Model(observer);
+    this.setRouting(router);
   }
 
-  public subscribeToAssistantEvents() {
-    this.eventObserver.subscribe(
-      "enterPressed",
-      this.getAssistantAnswer.bind(this)
-    );
+  private setUrlChangeHandler(path: Links, clickedValue: Links) {
+    const buttons = this.view.knowledgeBase.buttonsTag;
+    this.model.onButtonClicked(buttons, path, clickedValue);
   }
 
-  public async getBanks(): Promise<ResponseType[] | []> {
-    const banks = await this.api.fetchBanks();
-    return banks;
-  }
+  private setRouting(router: Router): void {
+    router.route(Links.home, () => {
+      this.view.renderStartPage();
+    });
 
-  public async getProducts(): Promise<ResponseType[] | []> {
-    const products = await this.api.fetchProducts();
-    return products;
-  }
+    router.route(Links.assistant, () => {
+      this.view.renderAssistantPage();
+      this.observer.subscribe(
+        EventTypes.ENTER_PRESSED,
+        this.model.getAssistantAnswer.bind(this)
+      );
+    });
 
-  public async getProductCategories(): Promise<Categories[] | []> {
-    const bankId = localStorage.getItem("bank");
-    const productId = localStorage.getItem("product");
+    router.route(Links.banks, async () => {
+      const banks = await this.model.getBanks();
+      this.view.renderKnowledgeBasePage(banks);
+      this.setUrlChangeHandler(Links.products, Links.banks);
+    });
 
-    if (!bankId || !productId) return [];
+    router.route(Links.products, async () => {
+      const products = await this.model.getProducts();
+      this.view.renderKnowledgeBasePage(products);
+      this.setUrlChangeHandler(Links.categories, Links.products);
+    });
 
-    const categories = await this.api.fetchProductsCategories(
-      Number(bankId),
-      Number(productId)
-    );
-    return categories;
-  }
+    router.route(Links.categories, async () => {
+      const categories = await this.model.getProductCategories();
+      this.view.renderKnowledgeBasePage(categories);
+      this.setUrlChangeHandler(Links.category_subsections, Links.categories);
+    });
 
-  public async getCategorySubsections(): Promise<ResponseType[] | []> {
-    const categoryId = localStorage.getItem("category");
-    if (!categoryId) return [];
-
-    const subsections = await this.api.fetchCategorySubsections(
-      Number(categoryId)
-    );
-    return subsections;
-  }
-
-  public async getSubsectionDetails() {
-    const subsectionId = localStorage.getItem("subsection");
-    if (!subsectionId) return [];
-
-    const subsectionDetails = await this.api.fetchSubsectionDetails(
-      Number(subsectionId)
-    );
-    return subsectionDetails;
-  }
-
-  public async getDetailedInformation() {
-    const detailId = localStorage.getItem("subsection-details");
-    if (!detailId) return [];
-
-    const detailedInfo = await this.api.fetchDetailedInformation(
-      Number(detailId)
-    );
-    return detailedInfo;
-  }
-
-  public async getAssistantAnswer(query: string) {
-    const answer = await this.api.assistant(query);
-    this.eventObserver.notify("assistantAnswer", answer);
+    router.route(Links.category_subsections, async () => {
+      const subsections = await this.model.getCategorySubsections();
+      this.view.renderKnowledgeBasePage(subsections);
+      this.setUrlChangeHandler(
+        Links.subsection_details,
+        Links.category_subsections
+      );
+    });
+    router.route(Links.subsection_details, async () => {
+      const details = await this.model.getSubsectionDetails();
+      this.view.renderKnowledgeBasePage(details, true);
+      this.setUrlChangeHandler(Links.detailed_data, Links.subsection_details);
+    });
+    router.route(Links.detailed_data, async () => {
+      const detailedData = await this.model.getDetailedData();
+      this.view.renderKnowledgeBaseTable(detailedData);
+    });
   }
 }
 
-export default AppController;
+export default Controller;
 
