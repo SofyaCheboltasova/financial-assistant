@@ -9,22 +9,14 @@ class App {
   private router: Router;
 
   constructor() {
-    this.router = new Router();
     this.observer = new EventObserver();
+    this.router = new Router(this.observer);
     this.controller = new AppController(this.observer, this.router);
-
-    window.addEventListener("popstate", () => this.router.resolveRoute());
-    window.addEventListener("hashchange", () => this.router.resolveRoute());
   }
 
   public start(): void {
-    this.observer.subscribe(
-      EventTypes.URL_CHANGED,
-      this.router.navigate.bind(this.router)
-    );
-
     const path = this.router.getPath();
-    this.router.navigate(path);
+    this.observer.notify(EventTypes.CHANGE_PAGE, path);
   }
 }
 
