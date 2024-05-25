@@ -1,6 +1,6 @@
 enum EventTypes {
   ENTER_PRESSED,
-  URL_CHANGED,
+  CHANGE_PAGE,
   ASSISTANT_ANSWER,
 }
 

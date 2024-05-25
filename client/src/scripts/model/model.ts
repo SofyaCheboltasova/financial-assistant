@@ -11,6 +11,11 @@ class Model {
   constructor(observer: EventObserver) {
     this.api = new Api();
     this.observer = observer;
+
+    this.observer.subscribe(
+      EventTypes.ENTER_PRESSED,
+      this.getAssistantAnswer.bind(this)
+    );
   }
 
   public onButtonClicked(
@@ -19,14 +24,11 @@ class Model {
     clickedValue?: Links
   ): void {
     buttonsTag.childNodes.forEach((node) => {
-      node.addEventListener("click", () => {
+      node.addEventListener("click", (e) => {
+        e.preventDefault();
         if (node instanceof HTMLElement && clickedValue)
           localStorage.setItem(clickedValue, node.id);
-
-        const url = new URL(location.toString());
-        url.pathname = path;
-        history.pushState(null, "", url.toString());
-        this.observer.notify(EventTypes.URL_CHANGED, path);
+        this.observer.notify(EventTypes.CHANGE_PAGE, path);
       });
     });
   }

@@ -17,10 +17,7 @@ class Home {
   private setButtonListener(a: HTMLAnchorElement, path: string): void {
     a.addEventListener("click", (e) => {
       e.preventDefault();
-      const url = new URL(location.toString());
-      url.pathname = path;
-      history.pushState(null, "", url.toString());
-      this.observer.notify(EventTypes.URL_CHANGED, path);
+      this.observer.notify(EventTypes.CHANGE_PAGE, path);
     });
   }
 
@@ -29,7 +26,7 @@ class Home {
     this.tag.classList.add("main__wrapper");
 
     const baseLink = document.createElement("a");
-    this.setButtonListener(baseLink, Links.knowledgeBase);
+    this.setButtonListener(baseLink, Links.banks);
 
     const assistantLink = document.createElement("a");
     this.setButtonListener(assistantLink, Links.assistant);
