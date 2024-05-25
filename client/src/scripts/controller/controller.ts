@@ -7,11 +7,9 @@ import View from "../view/view";
 class Controller {
   private view: View;
   private model: Model;
-  private observer: EventObserver;
   public searchParams: URLSearchParams | null = null;
 
   constructor(observer: EventObserver, router: Router) {
-    this.observer = observer;
     this.view = new View(observer);
     this.model = new Model(observer);
     this.setRouting(router);
@@ -29,10 +27,6 @@ class Controller {
 
     router.route(Links.assistant, () => {
       this.view.renderAssistantPage();
-      this.observer.subscribe(
-        EventTypes.ENTER_PRESSED,
-        this.model.getAssistantAnswer.bind(this)
-      );
     });
 
     router.route(Links.banks, async () => {
@@ -74,4 +68,3 @@ class Controller {
 }
 
 export default Controller;
-
