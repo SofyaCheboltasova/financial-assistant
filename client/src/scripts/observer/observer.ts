@@ -18,7 +18,7 @@ class EventObserver {
     }
   }
 
-  public notify(eventType: EventTypes, data: any): void {
+  public notify(eventType: EventTypes, data?: any): void {
     if (this.observers[eventType]) {
       this.observers[eventType].forEach((observer) => observer(data));
     }
