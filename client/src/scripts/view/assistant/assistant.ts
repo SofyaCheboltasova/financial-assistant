@@ -8,12 +8,12 @@ class Assistant {
   private observer: EventObserver;
   private textField: HTMLTextAreaElement;
 
-  constructor() {
+  constructor(observer: EventObserver) {
     this.tag = document.createElement("div");
     this.dialog = document.createElement("div");
     this.textField = document.createElement("textarea");
 
-    this.observer = new EventObserver();
+    this.observer = observer;
     this.observer.subscribe(
       EventTypes.ASSISTANT_ANSWER,
       this.handleApiCall.bind(this)
