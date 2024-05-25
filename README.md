@@ -10,6 +10,11 @@ Assistant is a question-answering system with a "Hybrid Retriever" architecture.
 
 ![IMG_4621 (2) (2)](https://github.com/SofyaCheboltasova/financial-assistant/assets/96617834/8a47840d-832a-4705-b2e4-3ac82b25b754)
 
+![IMG_4621 (2) (5)](https://github.com/SofyaCheboltasova/financial-assistant/assets/96617834/e6cbe253-40b7-49dc-87e8-d0ad20b34af2)
+
+![IMG_4621 (2) (6)](https://github.com/SofyaCheboltasova/financial-assistant/assets/96617834/b9ba7df7-ed49-4ea0-af1b-06e9dd1c91ff)
+
+
 ## 🔌Server
 
 ### Quickstart
